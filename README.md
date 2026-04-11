@@ -1,5 +1,10 @@
 # tienda
 
+## Documentación
+
+- Backlog Jira (épicas + historias): [docs/jira-backlog.md](docs/jira-backlog.md)
+- CSV para importación a Jira: [docs/jira-import.csv](docs/jira-import.csv)
+
 A new Flutter project.
 
 ## Getting Started
