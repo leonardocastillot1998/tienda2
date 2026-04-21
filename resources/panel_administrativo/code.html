@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Prestige Exchange | Admin Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-fixed-dim": "#b9c7e4",
+                    "tertiary-container": "#00164e",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "surface-container-highest": "#e0e3e5",
+                    "primary-fixed": "#d6e3ff",
+                    "error": "#ba1a1a",
+                    "on-tertiary-fixed": "#00164e",
+                    "inverse-primary": "#b9c7e4",
+                    "surface-tint": "#515f78",
+                    "outline-variant": "#c5c6cd",
+                    "on-error": "#ffffff",
+                    "primary-container": "#0d1c32",
+                    "background": "#f7f9fb",
+                    "surface-container-low": "#f2f4f6",
+                    "on-secondary-fixed": "#271900",
+                    "outline": "#75777e",
+                    "secondary-container": "#feb700",
+                    "surface-container": "#eceef0",
+                    "tertiary-fixed": "#dce1ff",
+                    "surface": "#f7f9fb",
+                    "primary": "#000000",
+                    "on-secondary": "#ffffff",
+                    "tertiary-fixed-dim": "#b6c4ff",
+                    "surface-variant": "#e0e3e5",
+                    "on-primary-fixed": "#0d1c32",
+                    "inverse-on-surface": "#eff1f3",
+                    "tertiary": "#000000",
+                    "secondary": "#7c5800",
+                    "on-tertiary-fixed-variant": "#264191",
+                    "inverse-surface": "#2d3133",
+                    "on-background": "#191c1e",
+                    "surface-dim": "#d8dadc",
+                    "surface-container-high": "#e6e8ea",
+                    "surface-bright": "#f7f9fb",
+                    "on-primary-fixed-variant": "#39475f",
+                    "secondary-fixed": "#ffdea8",
+                    "on-secondary-container": "#6b4b00",
+                    "on-primary-container": "#76849f",
+                    "error-container": "#ffdad6",
+                    "on-secondary-fixed-variant": "#5e4200",
+                    "on-error-container": "#93000a",
+                    "on-surface": "#191c1e",
+                    "secondary-fixed-dim": "#ffba20",
+                    "on-surface-variant": "#44474d",
+                    "on-tertiary-container": "#6780d3"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Manrope"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, .brand-font { font-family: 'Manrope', sans-serif; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+        }
+        .asymmetric-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 1.5rem;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface">
+<!-- TopAppBar -->
+<header class="bg-white/80 dark:bg-[#0A192F]/80 backdrop-blur-xl docked full-width top-0 z-50 bg-[#f2f4f6] dark:bg-[#0d1c32] shadow-[0_32px_64px_-12px_rgba(0,0,0,0.06)] flex justify-between items-center px-6 py-4 w-full">
+<div class="flex items-center gap-4">
+<img alt="User profile photo" class="w-10 h-10 rounded-full object-cover" data-alt="High-resolution professional avatar of a senior concierge manager in a dark suit with soft studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDqP9Rtl9F3GCSe4dMCzWsjFV7wa-7Kqs1ngL_H-wMt7tnGnHf9X3vJodzlrtWrn2PLIKQZVtJCX3zwyzc1-x3ZHeTUjOcPh_Ja2IX4VUtTmnt1xoXXwGpFY9tpO0O4Vx9hjkDtA_ttAPn0V7DuECMe-66ozieNRnZEsE8d1f4RCgEPEzTLAOraeRcQkYELfSnVqu2EJL5RevCNB4D_upLBW5lb9dlnqpDI3vHr3cfRcmE5-RP8tcZscCcdIAuOA-aBRafCJ6l0dA"/>
+<span class="text-xl font-extrabold tracking-tighter text-[#0A192F] dark:text-[#FEB700]">The Prestige Exchange</span>
+</div>
+<div class="flex items-center gap-6">
+<button class="text-[#191c1e] dark:text-[#d6e3ff] hover:opacity-80 transition-all duration-300">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</button>
+<button class="text-[#191c1e] dark:text-[#d6e3ff] hover:opacity-80 transition-all duration-300">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-[#191c1e] dark:text-[#d6e3ff] hover:opacity-80 transition-all duration-300">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+</div>
+</header>
+<div class="flex min-h-screen pt-4">
+<!-- NavigationDrawer -->
+<aside class="fixed left-0 top-0 h-screen hidden md:flex flex-col p-6 h-full w-72 rounded-r-2xl bg-[#f7f9fb] dark:bg-[#0A192F] border-none bg-[#f2f4f6] dark:bg-[#0d1c32] z-40">
+<div class="mb-10 flex flex-col items-start px-4">
+<div class="w-12 h-12 bg-secondary-container rounded-xl flex items-center justify-center mb-4">
+<span class="material-symbols-outlined text-on-secondary-container" style="font-variation-settings: 'FILL' 1;">dashboard_customize</span>
+</div>
+<h2 class="font-black text-[#0A192F] dark:text-[#FEB700] text-xl">Concierge Admin</h2>
+<p class="font-['Manrope'] text-sm uppercase tracking-widest opacity-60">Loyalty Manager</p>
+<span class="mt-2 text-xs font-bold px-2 py-1 bg-primary-container text-primary-fixed rounded-md">Tier: Platinum</span>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="bg-[#feb700] text-[#6b4b00] rounded-full px-4 py-3 font-bold flex items-center gap-4 transition-transform duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-['Manrope'] text-sm uppercase tracking-widest">Dashboard</span>
+</a>
+<a class="text-[#191c1e] dark:text-[#d6e3ff] px-4 py-3 hover:bg-[#f2f4f6] dark:hover:bg-[#0d1c32] rounded-full flex items-center gap-4 transition-transform duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-['Manrope'] text-sm uppercase tracking-widest">Inventory</span>
+</a>
+<a class="text-[#191c1e] dark:text-[#d6e3ff] px-4 py-3 hover:bg-[#f2f4f6] dark:hover:bg-[#0d1c32] rounded-full flex items-center gap-4 transition-transform duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-['Manrope'] text-sm uppercase tracking-widest">Analytics</span>
+</a>
+<a class="text-[#191c1e] dark:text-[#d6e3ff] px-4 py-3 hover:bg-[#f2f4f6] dark:hover:bg-[#0d1c32] rounded-full flex items-center gap-4 transition-transform duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="card_giftcard">card_giftcard</span>
+<span class="font-['Manrope'] text-sm uppercase tracking-widest">Rewards</span>
+</a>
+<a class="text-[#191c1e] dark:text-[#d6e3ff] px-4 py-3 hover:bg-[#f2f4f6] dark:hover:bg-[#0d1c32] rounded-full flex items-center gap-4 transition-transform duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="admin_panel_settings">admin_panel_settings</span>
+<span class="font-['Manrope'] text-sm uppercase tracking-widest">Settings</span>
+</a>
+</nav>
+<div class="mt-auto p-4 bg-primary-container rounded-2xl">
+<p class="text-xs text-on-primary-container mb-2">Monthly Target</p>
+<div class="h-1.5 w-full bg-surface/20 rounded-full overflow-hidden">
+<div class="h-full bg-secondary-container w-[72%]"></div>
+</div>
+<p class="text-[10px] text-primary-fixed mt-2">72% of Reward Cap Reached</p>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 md:ml-72 p-6 md:p-10 mb-20 md:mb-0">
+<!-- Dashboard Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
+<div>
+<h1 class="text-4xl md:text-5xl font-extrabold tracking-tighter text-on-surface mb-2">Performance Ledger</h1>
+<p class="text-on-surface-variant font-medium">Real-time oversight of the Prestige ecosystem.</p>
+</div>
+<div class="flex gap-3">
+<button class="bg-primary-container text-primary-fixed px-6 py-3 rounded-full font-bold flex items-center gap-2 hover:opacity-90 transition-all">
+<span class="material-symbols-outlined text-sm">download</span>
+                        Export Audit
+                    </button>
+<button class="bg-secondary-container text-on-secondary-container px-6 py-3 rounded-full font-bold flex items-center gap-2 shadow-lg shadow-secondary-container/20 active:scale-95 transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add_circle</span>
+                        Issue Global Points
+                    </button>
+</div>
+</div>
+<!-- Stats Bento Grid -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+<div class="bg-surface-container-lowest p-8 rounded-xl border border-outline-variant/10 shadow-sm relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 opacity-5 transition-transform group-hover:scale-110 duration-500">
+<span class="material-symbols-outlined text-[120px]">group</span>
+</div>
+<p class="text-on-surface-variant text-sm font-bold uppercase tracking-widest mb-4">Total Users</p>
+<h3 class="text-5xl font-black text-primary tracking-tighter mb-2">12,482</h3>
+<div class="flex items-center gap-2 text-secondary font-bold text-sm">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+<span>+14% this month</span>
+</div>
+</div>
+<div class="bg-primary-container p-8 rounded-xl relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 opacity-10 transition-transform group-hover:scale-110 duration-500">
+<span class="material-symbols-outlined text-[120px] text-white">monetization_on</span>
+</div>
+<p class="text-primary-fixed-dim text-sm font-bold uppercase tracking-widest mb-4">Points Issued</p>
+<h3 class="text-5xl font-black text-white tracking-tighter mb-2">4.8M</h3>
+<div class="flex items-center gap-2 text-secondary-fixed-dim font-bold text-sm">
+<span class="material-symbols-outlined text-sm">account_balance_wallet</span>
+<span>Value: $2.4M USD</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-8 rounded-xl border border-outline-variant/10 shadow-sm relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 opacity-5 transition-transform group-hover:scale-110 duration-500">
+<span class="material-symbols-outlined text-[120px]">stars</span>
+</div>
+<p class="text-on-surface-variant text-sm font-bold uppercase tracking-widest mb-4">Active Rewards</p>
+<h3 class="text-5xl font-black text-primary tracking-tighter mb-2">156</h3>
+<div class="flex items-center gap-2 text-error font-bold text-sm">
+<span class="material-symbols-outlined text-sm">warning</span>
+<span>12 Expiring soon</span>
+</div>
+</div>
+</section>
+<!-- Asymmetric Content Layout -->
+<div class="asymmetric-grid">
+<!-- Recent Rewards Table Section -->
+<section class="bg-surface-container-low rounded-xl p-1 overflow-hidden">
+<div class="p-6 flex justify-between items-center">
+<h2 class="text-2xl font-extrabold tracking-tight">Active Inventory</h2>
+<div class="flex gap-2">
+<span class="bg-surface-container-lowest border border-outline-variant/20 px-3 py-1 rounded-full text-xs font-bold">ALL</span>
+<span class="text-on-surface-variant/40 px-3 py-1 rounded-full text-xs font-bold hover:bg-surface-container-lowest cursor-pointer transition-colors">LUXURY</span>
+<span class="text-on-surface-variant/40 px-3 py-1 rounded-full text-xs font-bold hover:bg-surface-container-lowest cursor-pointer transition-colors">TRAVEL</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-outline-variant/10">
+<th class="p-4 text-xs font-black uppercase tracking-widest text-on-surface-variant/60">Reward Item</th>
+<th class="p-4 text-xs font-black uppercase tracking-widest text-on-surface-variant/60">Value</th>
+<th class="p-4 text-xs font-black uppercase tracking-widest text-on-surface-variant/60">Redemptions</th>
+<th class="p-4 text-xs font-black uppercase tracking-widest text-on-surface-variant/60 text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10">
+<tr class="hover:bg-surface-container-low/30 transition-colors">
+<td class="p-4">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-surface-container overflow-hidden">
+<img alt="Private Jet" class="w-full h-full object-cover" data-alt="Close up of a luxury private jet tail and engine with sleek metallic finish and dramatic sky reflection" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAeGFnHC4KJoe_ioP9nh6lpjLoaHhOa1nmEqZAmCIKASV43OEgMM9ci2dkbf6EfEqHEX6jo8RTsmnPzmPKg2Qj-P88GaMZRDHIQ8Wm7T4jiqNufPhtODaQ_fcJsHqZcFRHWkA_1pOcL14kkViPANQlQNzk010iQUScJykwrKh3MQjSgq1vCdomPvrkrRiR-g8IBoDpw9aGDwMi2c_pWDkKLbwU-6bgJb-9s6h2uDz3-BgcQaLyY5GuH9YJ4Ug0zyYI5sYoQe8f7sA"/>
+</div>
+<div>
+<p class="font-bold text-sm">Private Jet Charter</p>
+<p class="text-xs text-on-surface-variant">Exclusive • Tier 3</p>
+</div>
+</div>
+</td>
+<td class="p-4 text-sm font-medium">50,000 pts</td>
+<td class="p-4">
+<div class="flex items-center gap-2">
+<div class="h-1.5 w-16 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-3/4"></div>
+</div>
+<span class="text-xs font-bold">42/60</span>
+</div>
+</td>
+<td class="p-4 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-2 hover:bg-primary-container hover:text-white rounded-lg transition-colors"><span class="material-symbols-outlined text-lg">edit</span></button>
+<button class="p-2 hover:bg-error hover:text-white rounded-lg transition-colors text-error"><span class="material-symbols-outlined text-lg">delete</span></button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low/30 transition-colors">
+<td class="p-4">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-surface-container overflow-hidden">
+<img alt="Watch" class="w-full h-full object-cover" data-alt="Macro shot of a luxury swiss chronograph watch showing intricate dial details and gold accents" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDKJ_uu1ZTGKcVLGwNK0IFQrif4JacwCR5bwJ3Ds0e4UyTOwD0pzGWKLulnsw_R9RtSwHIwB5ZGXZylZphaWbULXWfMh3bEVqzNFfqjgz7t6ibKOesV0Tl7kmptjmQHn2zLD2nAzZl87DX-VqvzqLetAxjSVoSDXBYbkT-YnwfB-1CgGMrE2g_D_FRthY4HWu-lCqyXU-cSYnXY3H_psW4HTFnPSfRaMHTxJmiajwm8trKfMvmCja8elCl1KGGPFAElxiRjljthg"/>
+</div>
+<div>
+<p class="font-bold text-sm">Heritage Timepiece</p>
+<p class="text-xs text-on-surface-variant">Limited Edition</p>
+</div>
+</div>
+</td>
+<td class="p-4 text-sm font-medium">120,000 pts</td>
+<td class="p-4">
+<div class="flex items-center gap-2">
+<div class="h-1.5 w-16 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-1/4"></div>
+</div>
+<span class="text-xs font-bold">03/12</span>
+</div>
+</td>
+<td class="p-4 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-2 hover:bg-primary-container hover:text-white rounded-lg transition-colors"><span class="material-symbols-outlined text-lg">edit</span></button>
+<button class="p-2 hover:bg-error hover:text-white rounded-lg transition-colors text-error"><span class="material-symbols-outlined text-lg">delete</span></button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low/30 transition-colors">
+<td class="p-4">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-surface-container overflow-hidden">
+<img alt="Fine Dining" class="w-full h-full object-cover" data-alt="Artistically plated gourmet meal in a Michelin star restaurant with elegant lighting and soft background bokeh" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCiLa4NaRjBg02R4z7EOZdMcOCLiOrbnNWf53cMVs3AMDLRysVl5y9rJv46Op5icx_wBO9JMIWseKawEDYzrUFXhbpHx-0PE-JiafmooXwBsqNKQ1LRXFoMzk4BAMKkNdEY4zQsWoZu3rIDmxfnWbckKMCdpgqkkD3Q2BoPsIdnNEh3Z_oX2h0Z6eQ9H_blPaUhHXMN5lau_0YGA8CFmpoXOs3JA-Wfn174cUGSaiZCpqrBd7eOUgWnnBTXsZ7Baizsu-rjLqdOgg"/>
+</div>
+<div>
+<p class="font-bold text-sm">Chef's Table Experience</p>
+<p class="text-xs text-on-surface-variant">Curated Events</p>
+</div>
+</div>
+</td>
+<td class="p-4 text-sm font-medium">8,500 pts</td>
+<td class="p-4">
+<div class="flex items-center gap-2">
+<div class="h-1.5 w-16 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-full"></div>
+</div>
+<span class="text-xs font-bold">150/150</span>
+</div>
+</td>
+<td class="p-4 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-2 hover:bg-primary-container hover:text-white rounded-lg transition-colors"><span class="material-symbols-outlined text-lg">edit</span></button>
+<button class="p-2 hover:bg-error hover:text-white rounded-lg transition-colors text-error"><span class="material-symbols-outlined text-lg">delete</span></button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="p-4 bg-surface-container-low flex justify-center">
+<button class="text-xs font-bold text-on-surface-variant/60 hover:text-primary transition-colors flex items-center gap-2">
+                                VIEW ALL 156 REWARDS
+                                <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Quick Actions & Alerts Section -->
+<section class="flex flex-col gap-6">
+<div class="bg-surface-container-lowest rounded-xl p-8 shadow-sm border border-outline-variant/10 relative overflow-hidden">
+<div class="relative z-10">
+<h2 class="text-2xl font-extrabold tracking-tight mb-6">Quick Actions</h2>
+<div class="grid grid-cols-1 gap-3">
+<button class="w-full flex items-center justify-between p-4 bg-surface-container-low rounded-xl hover:bg-secondary-fixed transition-all group">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">add_shopping_cart</span>
+<span class="font-bold text-sm">Add New Reward</span>
+</div>
+<span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100 transition-opacity">chevron_right</span>
+</button>
+<button class="w-full flex items-center justify-between p-4 bg-surface-container-low rounded-xl hover:bg-secondary-fixed transition-all group">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">card_membership</span>
+<span class="font-bold text-sm">Create Promo Code</span>
+</div>
+<span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100 transition-opacity">chevron_right</span>
+</button>
+<button class="w-full flex items-center justify-between p-4 bg-surface-container-low rounded-xl hover:bg-secondary-fixed transition-all group">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">supervised_user_circle</span>
+<span class="font-bold text-sm">Review New Applications</span>
+</div>
+<span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100 transition-opacity">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<div class="bg-primary-container rounded-xl p-8 text-white relative overflow-hidden">
+<div class="absolute -right-10 -bottom-10 w-40 h-40 bg-secondary-container rounded-full blur-3xl opacity-20"></div>
+<h2 class="text-xl font-extrabold tracking-tight mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary-container">campaign</span>
+                            System Health
+                        </h2>
+<div class="space-y-4">
+<div class="flex justify-between items-center text-sm border-b border-white/10 pb-3">
+<span class="text-primary-fixed-dim">Database Sync</span>
+<span class="font-bold text-secondary-container">Optimal</span>
+</div>
+<div class="flex justify-between items-center text-sm border-b border-white/10 pb-3">
+<span class="text-primary-fixed-dim">API Latency</span>
+<span class="font-bold text-secondary-container">42ms</span>
+</div>
+<div class="flex justify-between items-center text-sm">
+<span class="text-primary-fixed-dim">Last Backup</span>
+<span class="font-bold text-secondary-container">14m ago</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+</div>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 md:hidden bg-white/90 dark:bg-[#0A192F]/90 backdrop-blur-2xl shadow-[0_-10px_40px_rgba(0,0,0,0.1)] rounded-t-3xl border-t-[0.5px] border-white/10">
+<a class="flex flex-col items-center justify-center text-[#191c1e]/60 dark:text-[#d6e3ff]/60 scale-90 duration-150 ease-out hover:text-[#feb700]" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-['Inter'] text-[10px] font-medium">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#191c1e]/60 dark:text-[#d6e3ff]/60 scale-90 duration-150 ease-out hover:text-[#feb700]" href="#">
+<span class="material-symbols-outlined" data-icon="redeem">redeem</span>
+<span class="font-['Inter'] text-[10px] font-medium">Rewards</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#191c1e]/60 dark:text-[#d6e3ff]/60 scale-90 duration-150 ease-out hover:text-[#feb700]" href="#">
+<span class="material-symbols-outlined" data-icon="person_outline">person_outline</span>
+<span class="font-['Inter'] text-[10px] font-medium">Profile</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#feb700] bg-[#feb700]/10 rounded-2xl px-3 py-1 scale-90 duration-150 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard_customize">dashboard_customize</span>
+<span class="font-['Inter'] text-[10px] font-medium">Admin</span>
+</a>
+</nav>
+</body></html>
