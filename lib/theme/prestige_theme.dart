@@ -11,6 +11,7 @@ class PrestigeColors {
   static const Color surface = Color(0xFFF7F9FB);
   static const Color surfaceContainerLow = Color(0xFFF2F4F6);
   static const Color surfaceContainerLowest = Color(0xFFFFFFFF);
+  static const Color surfaceContainerHigh = Color(0xFFE6E8EA);
   static const Color surfaceContainerHighest = Color(0xFFE0E3E5);
   static const Color onSurface = Color(0xFF191C1E);
   static const Color onSurfaceVariant = Color(0xFF44474D);
@@ -36,6 +37,7 @@ ThemeData buildPrestigeTheme() {
         onSecondaryContainer: PrestigeColors.onSecondaryContainer,
         surfaceContainerLow: PrestigeColors.surfaceContainerLow,
         surfaceContainerLowest: PrestigeColors.surfaceContainerLowest,
+        surfaceContainerHigh: PrestigeColors.surfaceContainerHigh,
         surfaceContainerHighest: PrestigeColors.surfaceContainerHighest,
         outlineVariant: PrestigeColors.outlineVariant,
         onSurfaceVariant: PrestigeColors.onSurfaceVariant,

@@ -71,46 +71,561 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildDashboard() {
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    return Stack(
+      children: [
+        ListView(
+          padding: const EdgeInsets.only(
+            top: 100,
+            bottom: 120,
+            left: 24,
+            right: 24,
+          ),
           children: [
-            Text(
-              'Bienvenido, ${widget.username}',
-              style: Theme.of(
-                context,
-              ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              'Puntos acumulados: $_puntos',
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton.icon(
-              onPressed: () => _agregarPuntos(10),
-              icon: const Icon(Icons.add_circle),
-              label: const Text('Ganar 10 puntos'),
-            ),
-            const SizedBox(height: 10),
-            ElevatedButton.icon(
-              onPressed: _puntos >= 50 ? () => _agregarPuntos(-50) : null,
-              icon: const Icon(Icons.card_giftcard),
-              label: const Text('Canjear premio (50 puntos)'),
-            ),
-            if (_puntos < 50)
-              const Padding(
-                padding: EdgeInsets.only(top: 8),
-                child: Text(
-                  'Necesitas 50 puntos para canjear.',
-                  style: TextStyle(color: Colors.grey),
-                ),
-              ),
+            _buildWelcomeAndHero(),
+            const SizedBox(height: 32),
+            _buildQuickActionsGrid(),
+            const SizedBox(height: 32),
+            _buildRecentActivity(),
+            const SizedBox(height: 32),
+            _buildRecommendedReward(),
           ],
         ),
+        _buildGlassAppBar(),
+      ],
+    );
+  }
+
+  Widget _buildWelcomeAndHero() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Bienvenido, ${widget.username}',
+          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+            fontWeight: FontWeight.bold,
+            color: PrestigeColors.primary,
+          ),
+        ),
+        const SizedBox(height: 24),
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(32),
+            gradient: const LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [PrestigeColors.primary, PrestigeColors.primaryContainer],
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: PrestigeColors.primary.withOpacity(0.3),
+                blurRadius: 20,
+                offset: const Offset(0, 10),
+              ),
+            ],
+          ),
+          padding: const EdgeInsets.all(32),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'CURRENT BALANCE',
+                style: TextStyle(
+                  color: PrestigeColors.secondaryContainer,
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 2,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    '$_puntos',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 48,
+                      fontWeight: FontWeight.w800,
+                      height: 1.0,
+                      letterSpacing: -2,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  const Text(
+                    'PTS',
+                    style: TextStyle(
+                      color: PrestigeColors.secondaryContainer,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 24),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Next Tier: Platinum',
+                    style: TextStyle(
+                      color: Colors.white.withOpacity(0.8),
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Text(
+                    '500 pts to go',
+                    style: TextStyle(
+                      color: PrestigeColors.secondaryContainer.withOpacity(0.8),
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: LinearProgressIndicator(
+                  value: 0.8,
+                  minHeight: 6,
+                  backgroundColor: Colors.white.withOpacity(0.1),
+                  valueColor: const AlwaysStoppedAnimation<Color>(
+                    PrestigeColors.secondaryContainer,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 32),
+              ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: PrestigeColors.secondaryContainer,
+                  foregroundColor: PrestigeColors.onSecondaryContainer,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(32),
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 16,
+                  ),
+                  elevation: 4,
+                  shadowColor: PrestigeColors.secondaryContainer.withOpacity(0.5),
+                ),
+                onPressed: _puntos >= 50 ? () => _agregarPuntos(-50) : null,
+                icon: const Icon(Icons.redeem, size: 20),
+                label: const Text(
+                  'Canjear premio (50 puntos)',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              if (_puntos < 50)
+                const Padding(
+                  padding: EdgeInsets.only(top: 8),
+                  child: Text(
+                    'Necesitas 50 puntos para canjear.',
+                    style: TextStyle(color: Colors.white54, fontSize: 12),
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildQuickActionsGrid() {
+    return Column(
+      children: [
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            color: PrestigeColors.surfaceContainerLowest,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: PrestigeColors.outlineVariant.withOpacity(0.15),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.02),
+                blurRadius: 10,
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Explore the Boutique',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: PrestigeColors.primary,
+                ),
+              ),
+              const SizedBox(height: 8),
+              const Text(
+                'Discover curated rewards from luxury tech to five-star escapes.',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: PrestigeColors.onSurfaceVariant,
+                ),
+              ),
+              const SizedBox(height: 24),
+              ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.transparent,
+                  foregroundColor: PrestigeColors.secondary,
+                  shadowColor: Colors.transparent,
+                  elevation: 0,
+                  alignment: Alignment.centerLeft,
+                  padding: EdgeInsets.zero,
+                ),
+                onPressed: () => _agregarPuntos(10),
+                icon: const Icon(Icons.add_circle_outline, size: 20),
+                label: const Text(
+                  'GANAR 10 PUNTOS',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 16),
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            color: PrestigeColors.surfaceContainerLow,
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: 48,
+                height: 48,
+                decoration: const BoxDecoration(
+                  color: Color(0xFFFFDEA8), // secondary-fixed
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.verified,
+                  color: PrestigeColors.onSecondaryContainer,
+                ),
+              ),
+              const SizedBox(height: 24),
+              const Text(
+                'Gold Member',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: PrestigeColors.primary,
+                ),
+              ),
+              const SizedBox(height: 4),
+              const Text(
+                'Since October 2023',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: PrestigeColors.onSurfaceVariant,
+                ),
+              ),
+              const SizedBox(height: 24),
+              const Divider(color: Colors.black12),
+              const SizedBox(height: 16),
+              Row(
+                children: const [
+                  Icon(Icons.auto_awesome, color: PrestigeColors.secondary, size: 16),
+                  SizedBox(width: 8),
+                  Text(
+                    '3 EXCLUSIVE OFFERS',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: PrestigeColors.secondary,
+                      letterSpacing: 1,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildRecentActivity() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            const Text(
+              'Recent Activity',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: PrestigeColors.primary,
+              ),
+            ),
+            TextButton(
+              onPressed: () {},
+              child: const Text(
+                'VIEW ALL',
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 1,
+                  color: PrestigeColors.onSurfaceVariant,
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 16),
+        Container(
+          decoration: BoxDecoration(
+            color: PrestigeColors.surfaceContainerLowest,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.02),
+                blurRadius: 10,
+              ),
+            ],
+          ),
+          child: Column(
+            children: [
+              _buildActivityItem(Icons.shopping_bag, 'Signature Tech Bundle', 'Redemption • 2 hours ago', '-1,200', true),
+              const Divider(height: 1, color: Colors.black12),
+              _buildActivityItem(Icons.add_task, 'Quarterly Bonus', 'Reward • Yesterday', '+500', false),
+              const Divider(height: 1, color: Colors.black12),
+              _buildActivityItem(Icons.restaurant, 'Dining Experience', 'Purchase Reward • Oct 12', '+150', false),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildActivityItem(IconData icon, String title, String subtitle, String points, bool isNegative) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+      child: Row(
+        children: [
+          Container(
+            width: 48,
+            height: 48,
+            decoration: BoxDecoration(
+              color: PrestigeColors.surfaceContainerHigh,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(icon, color: PrestigeColors.primary),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: PrestigeColors.primary,
+                  ),
+                ),
+                Text(
+                  subtitle,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: PrestigeColors.onSurfaceVariant,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                points,
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                  color: isNegative ? const Color(0xFFBA1A1A) : const Color(0xFF1A8A3D),
+                ),
+              ),
+              const Text(
+                'POINTS',
+                style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                  color: PrestigeColors.onSurfaceVariant,
+                  letterSpacing: 1,
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
+    );
+  }
+
+  Widget _buildRecommendedReward() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Top Pick For You',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: PrestigeColors.primary,
+          ),
+        ),
+        const SizedBox(height: 16),
+        Container(
+          decoration: BoxDecoration(
+            color: PrestigeColors.surfaceContainerLowest,
+            borderRadius: BorderRadius.circular(24),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 20,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Stack(
+                children: [
+                  ClipRRect(
+                    borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+                    child: Image.network(
+                      'https://lh3.googleusercontent.com/aida-public/AB6AXuDK90Kt4WkhwDA4Mcz3DfaZlSh1EQtvFie_dQUdGkIrm3DFgEIRTpTG3zsWgTNHYFDtYNYR7ez6Xjmp6kJrjEUvbKMkSmpOq78eYa4YlnRgMdnGbjzetIjaRc7iqqi1ra_-VSmeUpKgsHcn1YAxeueAzVy4quCecc3E7fMDsbzzO1Qcwjbq32S6HEfPduLs-HSVDcxXIIgx84RJuZE-YCJX4-BMmeU0aj71g9BkNKT6vMyQ1AymXNr5cBXgCSqnBPni6FTcGkUMeA',
+                      height: 240,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  Positioned(
+                    top: 16,
+                    left: 16,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: PrestigeColors.primaryContainer,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: const Text(
+                        'LIMITED OFFER',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 1,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Retreat & Renew Spa Day',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w800,
+                        color: PrestigeColors.primary,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    const Text(
+                      'Escape for a full day of curated wellness treatments at our flagship partner sanctuary.',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: PrestigeColors.onSurfaceVariant,
+                        height: 1.5,
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: const [
+                            Text(
+                              'REDEMPTION VALUE',
+                              style: TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                                color: PrestigeColors.onSurfaceVariant,
+                                letterSpacing: 1,
+                              ),
+                            ),
+                            SizedBox(height: 4),
+                            Text.rich(
+                              TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: '1,800 ',
+                                    style: TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.w800,
+                                      color: PrestigeColors.secondary,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: 'pts',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w800,
+                                      color: PrestigeColors.secondary,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        Container(
+                          width: 48,
+                          height: 48,
+                          decoration: const BoxDecoration(
+                            color: PrestigeColors.primary,
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            Icons.chevron_right,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 
@@ -552,12 +1067,10 @@ class _HomePageState extends State<HomePage> {
   }) {
     final isSelected = _currentIndex == index;
     final color = isSelected
-        ? (isActiveStyle
-              ? PrestigeColors.primaryContainer
-              : PrestigeColors.secondaryContainer)
-        : Colors.grey;
+        ? PrestigeColors.primaryContainer
+        : Colors.transparent;
     final textColor = isSelected
-        ? (isActiveStyle ? Colors.white : PrestigeColors.primaryContainer)
+        ? Colors.white
         : Colors.grey;
 
     return GestureDetector(
