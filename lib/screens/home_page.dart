@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../services/auth_service.dart';
 import 'login_page.dart';
@@ -919,41 +920,67 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildRewardsGrid() {
-    return GridView.count(
-      physics: const NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      crossAxisCount: 2,
-      mainAxisSpacing: 24,
-      crossAxisSpacing: 16,
-      childAspectRatio: 0.65,
-      children: [
-        _buildRewardCard(
-          'Prestige Chronograph V1',
-          '12,500 pts',
-          'https://lh3.googleusercontent.com/aida-public/AB6AXuDM0QX3Q3pZ3eYT52DvC5RHSUjQSgHqcHMe_q6eLmwXPBbC9MjgTDFOlX3llhF4CyVPVpu6yCPx9I0Ajfeq41dLfYVsJ1Xe7IJAC2AV1e4rybcBlONRVZEtUYBfmKuqz34KJk1a50xWdByShoFwHguPURSZ1Z0LJbXTeLdFB1d3H-wwFxfhREZSiRmcyCAQJ9MFsq5Ji01Fqm-APyhoz9EiMfdp-c0jalhksqUeI4R2HcNF0OYc1oIHDWqC7IjuE4HZG9pLGhZ-Jw',
-          tag: 'Luxe Tech',
-          tagColor: PrestigeColors.primaryContainer.withOpacity(0.2),
-          tagTextColor: PrestigeColors.primary,
-        ),
-        _buildRewardCard(
-          'Masterclass: Artisan Brewing',
-          '4,200 pts',
-          'https://lh3.googleusercontent.com/aida-public/AB6AXuCPeb1qY-jZeZTE-gnMZf4q7mHAnVYmwJ2QanaBwT41X6KncgHG38CxUUnL-YNYBfbQ8-rU8SZH6FemR1-UENkzXMaK8hL0hgKh7hW17fy_7_puJ_HckKRJtPJAfcZ41gzGHQGF4G7Hs_sMuzyWkVGNm63uHvjWGdWkI6cd9cJwAFLc91wonakZwJ1wXj1OELwg2uElx8m-KDHN_rG3zPTUoR2IxIY1DDK69Fx6kQtV7RoFH6ha_0LTSl4WdTERe9ub71YmWH2T7w',
-        ),
-        _buildRewardCard(
-          'Elite Audio Horizon S',
-          '8,900 pts',
-          'https://lh3.googleusercontent.com/aida-public/AB6AXuA0gS0UkLY0dXg94AipFVj8p6rjCq2rBvOGi00cQj5_NIbIay6MWE1Xyrwg0ZeLyazSQ8bvEU3JS0JkvX9m0dOWbhx9COIg8oBroi1P3NdhAXRmkOcsWc7dI6kxZeKnIXkyM8MZi_J5_4KWikmopYMOmt0SJxxatNARNijGtHAw1dGN8eYalgqlGWWzL6O6V76asC__xNEcCNJ-ada4PgbOUD2HFof61jMQciEAAEGWStD6I_J0ACf0x7m3zP5VZc2y37JPY8eX7A',
-          tag: 'Low Stock',
-          tagColor: const Color(0xFFFFDAD6),
-          tagTextColor: const Color(0xFF93000A),
-        ),
-        _buildRewardCard(
-          'Michelin Tasting Experience',
-          '15,000 pts',
-          'https://lh3.googleusercontent.com/aida-public/AB6AXuBwPMva_bzgp4r5vHwttE5M3_V43A8nRPk42fva-8J7TIYwC8QwMHaU-_RxAfpDVr9izS0pd9CTpfkmvWKmo7UUlJpUxZ8GCTJ48yFRNNfMUVDFXBJbVyKjmrkgSgcNr-QycLBq1yJR6JbnfW1UL67yJ_tlbPGwauA3qYa5le-dtmCss4oDs3yjGMSTb7m7fnVRBztCz7GDNyohabNp9DYyysg0Hjb93vY6AzFQFZawbqqfEXsfZ9UDHyB3Dv-20pMZSPp-SrwCGA',
-        ),
-      ],
+    return FutureBuilder<List<Map<String, dynamic>>>(
+      future: Supabase.instance.client.from('productos').select(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: Padding(
+              padding: EdgeInsets.all(32.0),
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
+        
+        if (snapshot.hasError) {
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.all(32.0),
+              child: Text(
+                'Error loading catalog',
+                style: TextStyle(color: PrestigeColors.onSurfaceVariant),
+              ),
+            ),
+          );
+        }
+
+        final records = snapshot.data;
+        if (records == null || records.isEmpty) {
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.all(32.0),
+              child: Text(
+                'No products available',
+                style: TextStyle(color: PrestigeColors.onSurfaceVariant),
+              ),
+            ),
+          );
+        }
+
+        return GridView.count(
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          crossAxisCount: 2,
+          mainAxisSpacing: 24,
+          crossAxisSpacing: 16,
+          childAspectRatio: 0.65,
+          children: records.map((product) {
+            final title = product['title']?.toString() ?? 'Producto sin título';
+            final points = '${product['points']?.toString() ?? '0'} pts';
+            final imageUrl = product['image_url']?.toString() ?? '';
+            final tag = product['tag']?.toString();
+
+            return _buildRewardCard(
+              title,
+              points,
+              imageUrl,
+              tag: tag,
+              tagColor: tag != null ? PrestigeColors.primaryContainer.withOpacity(0.2) : null,
+              tagTextColor: tag != null ? PrestigeColors.primary : null,
+            );
+          }).toList(),
+        );
+      },
     );
   }
 
