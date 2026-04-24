@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../services/auth_service.dart';
 import 'login_page.dart';
 import 'profile_page.dart';
+import 'history_page.dart';
 import '../theme/prestige_theme.dart';
 
 class HomePage extends StatefulWidget {
@@ -1138,6 +1139,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     Widget _buildBody() {
       if (_currentIndex == 1) return _buildCatalog();
+      if (_currentIndex == 2) return const HistoryPage();
       if (_currentIndex == 3) {
         return ProfilePage(
           username: widget.username,

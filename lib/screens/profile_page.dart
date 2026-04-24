@@ -111,7 +111,7 @@ class _ProfilePageState extends State<ProfilePage> {
         surfaceTintColor: Colors.transparent,
         shadowColor: Colors.black.withOpacity(0.06),
         title: Text(
-          'The Prestige Exchange',
+          'Client Loyalty',
           style: GoogleFonts.manrope(
             fontSize: 20,
             fontWeight: FontWeight.w800,

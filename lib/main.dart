@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'The Prestige Exchange',
+      title: 'Client Loyalty',
       theme: buildPrestigeTheme(),
       home: LoginPage(authService: authService),
     );
