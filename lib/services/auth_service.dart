@@ -142,4 +142,42 @@ class AuthService {
       // Ignore
     }
   }
+
+  Future<Map<String, dynamic>?> getUserProfile(String username) async {
+    try {
+      final data = await _supabase
+          .from('usuarios')
+          .select('nombre_completo, email, numero_de_telefono, fecha_de_nacimiento, address, points')
+          .eq('username', username)
+          .maybeSingle();
+      return data;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<bool> updateUserProfile({
+    required String username,
+    String? nombreCompleto,
+    String? email,
+    String? telefono,
+    String? fechaNacimiento,
+    String? address,
+  }) async {
+    try {
+      await _supabase
+          .from('usuarios')
+          .update({
+            'nombre_completo': nombreCompleto,
+            'email': email,
+            'numero_de_telefono': telefono,
+            'fecha_de_nacimiento': fechaNacimiento,
+            'address': address,
+          })
+          .eq('username', username);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
 }

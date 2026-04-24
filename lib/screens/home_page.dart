@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../services/auth_service.dart';
 import 'login_page.dart';
+import 'profile_page.dart';
 import '../theme/prestige_theme.dart';
 
 class HomePage extends StatefulWidget {
@@ -1109,11 +1110,22 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    Widget _buildBody() {
+      if (_currentIndex == 1) return _buildCatalog();
+      if (_currentIndex == 3) {
+        return ProfilePage(
+          username: widget.username,
+          authService: widget.authService,
+        );
+      }
+      return _buildDashboard();
+    }
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       extendBodyBehindAppBar: true,
       extendBody: true,
-      body: _currentIndex == 1 ? _buildCatalog() : _buildDashboard(),
+      body: _buildBody(),
       bottomNavigationBar: _buildBottomNavBar(),
     );
   }
