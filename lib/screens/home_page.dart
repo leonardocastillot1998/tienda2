@@ -209,16 +209,15 @@ class _HomePageState extends State<HomePage> {
                     vertical: 16,
                   ),
                   elevation: 4,
-                  shadowColor: PrestigeColors.secondaryContainer.withOpacity(0.5),
+                  shadowColor: PrestigeColors.secondaryContainer.withOpacity(
+                    0.5,
+                  ),
                 ),
                 onPressed: _puntos >= 50 ? () => _agregarPuntos(-50) : null,
                 icon: const Icon(Icons.redeem, size: 20),
                 label: const Text(
                   'Canjear premio (50 puntos)',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                 ),
               ),
               if (_puntos < 50)
@@ -249,10 +248,7 @@ class _HomePageState extends State<HomePage> {
               color: PrestigeColors.outlineVariant.withOpacity(0.15),
             ),
             boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.02),
-                blurRadius: 10,
-              ),
+              BoxShadow(color: Colors.black.withOpacity(0.02), blurRadius: 10),
             ],
           ),
           child: Column(
@@ -342,7 +338,11 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 16),
               Row(
                 children: const [
-                  Icon(Icons.auto_awesome, color: PrestigeColors.secondary, size: 16),
+                  Icon(
+                    Icons.auto_awesome,
+                    color: PrestigeColors.secondary,
+                    size: 16,
+                  ),
                   SizedBox(width: 8),
                   Text(
                     '3 EXCLUSIVE OFFERS',
@@ -398,19 +398,34 @@ class _HomePageState extends State<HomePage> {
             color: PrestigeColors.surfaceContainerLowest,
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.02),
-                blurRadius: 10,
-              ),
+              BoxShadow(color: Colors.black.withOpacity(0.02), blurRadius: 10),
             ],
           ),
           child: Column(
             children: [
-              _buildActivityItem(Icons.shopping_bag, 'Signature Tech Bundle', 'Redemption • 2 hours ago', '-1,200', true),
+              _buildActivityItem(
+                Icons.shopping_bag,
+                'Signature Tech Bundle',
+                'Redemption • 2 hours ago',
+                '-1,200',
+                true,
+              ),
               const Divider(height: 1, color: Colors.black12),
-              _buildActivityItem(Icons.add_task, 'Quarterly Bonus', 'Reward • Yesterday', '+500', false),
+              _buildActivityItem(
+                Icons.add_task,
+                'Quarterly Bonus',
+                'Reward • Yesterday',
+                '+500',
+                false,
+              ),
               const Divider(height: 1, color: Colors.black12),
-              _buildActivityItem(Icons.restaurant, 'Dining Experience', 'Purchase Reward • Oct 12', '+150', false),
+              _buildActivityItem(
+                Icons.restaurant,
+                'Dining Experience',
+                'Purchase Reward • Oct 12',
+                '+150',
+                false,
+              ),
             ],
           ),
         ),
@@ -418,7 +433,13 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildActivityItem(IconData icon, String title, String subtitle, String points, bool isNegative) {
+  Widget _buildActivityItem(
+    IconData icon,
+    String title,
+    String subtitle,
+    String points,
+    bool isNegative,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       child: Row(
@@ -462,7 +483,9 @@ class _HomePageState extends State<HomePage> {
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w800,
-                  color: isNegative ? const Color(0xFFBA1A1A) : const Color(0xFF1A8A3D),
+                  color: isNegative
+                      ? const Color(0xFFBA1A1A)
+                      : const Color(0xFF1A8A3D),
                 ),
               ),
               const Text(
@@ -512,7 +535,9 @@ class _HomePageState extends State<HomePage> {
               Stack(
                 children: [
                   ClipRRect(
-                    borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(24),
+                    ),
                     child: Image.network(
                       'https://lh3.googleusercontent.com/aida-public/AB6AXuDK90Kt4WkhwDA4Mcz3DfaZlSh1EQtvFie_dQUdGkIrm3DFgEIRTpTG3zsWgTNHYFDtYNYR7ez6Xjmp6kJrjEUvbKMkSmpOq78eYa4YlnRgMdnGbjzetIjaRc7iqqi1ra_-VSmeUpKgsHcn1YAxeueAzVy4quCecc3E7fMDsbzzO1Qcwjbq32S6HEfPduLs-HSVDcxXIIgx84RJuZE-YCJX4-BMmeU0aj71g9BkNKT6vMyQ1AymXNr5cBXgCSqnBPni6FTcGkUMeA',
                       height: 240,
@@ -524,7 +549,10 @@ class _HomePageState extends State<HomePage> {
                     top: 16,
                     left: 16,
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 6,
+                      ),
                       decoration: BoxDecoration(
                         color: PrestigeColors.primaryContainer,
                         borderRadius: BorderRadius.circular(16),
@@ -1070,9 +1098,7 @@ class _HomePageState extends State<HomePage> {
     final color = isSelected
         ? PrestigeColors.primaryContainer
         : Colors.transparent;
-    final textColor = isSelected
-        ? Colors.white
-        : Colors.grey;
+    final textColor = isSelected ? Colors.white : Colors.grey;
 
     return GestureDetector(
       onTap: () {

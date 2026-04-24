@@ -147,7 +147,9 @@ class AuthService {
     try {
       final data = await _supabase
           .from('usuarios')
-          .select('nombre_completo, email, numero_de_telefono, fecha_de_nacimiento, address, points')
+          .select(
+            'nombre_completo, email, numero_de_telefono, fecha_de_nacimiento, address, points',
+          )
           .eq('username', username)
           .maybeSingle();
       return data;

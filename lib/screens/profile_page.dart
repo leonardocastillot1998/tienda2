@@ -34,7 +34,9 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> _loadProfile() async {
-    final profileData = await widget.authService.getUserProfile(widget.username);
+    final profileData = await widget.authService.getUserProfile(
+      widget.username,
+    );
     if (profileData != null && mounted) {
       setState(() {
         _nameController.text = profileData['nombre_completo'] ?? '';
@@ -72,7 +74,11 @@ class _ProfilePageState extends State<ProfilePage> {
       });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(success ? 'Profile updated successfully' : 'Failed to update profile'),
+          content: Text(
+            success
+                ? 'Profile updated successfully'
+                : 'Failed to update profile',
+          ),
           backgroundColor: success ? Colors.green : Colors.red,
         ),
       );
@@ -131,67 +137,65 @@ class _ProfilePageState extends State<ProfilePage> {
                   width: 2,
                 ),
               ),
-              child: const Icon(Icons.person, color: PrestigeColors.primaryContainer),
+              child: const Icon(
+                Icons.person,
+                color: PrestigeColors.primaryContainer,
+              ),
             ),
           ),
         ],
       ),
       body: _isLoading
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
+          ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 32.0),
-        child: Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 896), // max-w-4xl
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'My Profile',
-                  style: GoogleFonts.manrope(
-                    fontSize: 36,
-                    fontWeight: FontWeight.w900,
-                    letterSpacing: -1.5,
-                    color: PrestigeColors.onSurface,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 24.0,
+                vertical: 32.0,
+              ),
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 896), // max-w-4xl
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'My Profile',
+                        style: GoogleFonts.manrope(
+                          fontSize: 36,
+                          fontWeight: FontWeight.w900,
+                          letterSpacing: -1.5,
+                          color: PrestigeColors.onSurface,
+                        ),
+                      ),
+                      const SizedBox(height: 40),
+                      LayoutBuilder(
+                        builder: (context, constraints) {
+                          final isDesktop = constraints.maxWidth > 800;
+                          if (isDesktop) {
+                            return Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(flex: 4, child: _buildLeftColumn()),
+                                const SizedBox(width: 32),
+                                Expanded(flex: 8, child: _buildRightColumn()),
+                              ],
+                            );
+                          }
+                          return Column(
+                            children: [
+                              _buildLeftColumn(),
+                              const SizedBox(height: 32),
+                              _buildRightColumn(),
+                            ],
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 100), // Bottom padding for nav
+                    ],
                   ),
                 ),
-                const SizedBox(height: 40),
-                LayoutBuilder(
-                  builder: (context, constraints) {
-                    final isDesktop = constraints.maxWidth > 800;
-                    if (isDesktop) {
-                      return Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            flex: 4,
-                            child: _buildLeftColumn(),
-                          ),
-                          const SizedBox(width: 32),
-                          Expanded(
-                            flex: 8,
-                            child: _buildRightColumn(),
-                          ),
-                        ],
-                      );
-                    }
-                    return Column(
-                      children: [
-                        _buildLeftColumn(),
-                        const SizedBox(height: 32),
-                        _buildRightColumn(),
-                      ],
-                    );
-                  },
-                ),
-                const SizedBox(height: 100), // Bottom padding for nav
-              ],
+              ),
             ),
-          ),
-        ),
-      ),
     );
   }
 
@@ -217,7 +221,11 @@ class _ProfilePageState extends State<ProfilePage> {
                 ],
               ),
               child: const Center(
-                child: Icon(Icons.person, size: 80, color: PrestigeColors.primaryContainer),
+                child: Icon(
+                  Icons.person,
+                  size: 80,
+                  color: PrestigeColors.primaryContainer,
+                ),
               ),
             ),
             Positioned(
@@ -321,9 +329,13 @@ class _ProfilePageState extends State<ProfilePage> {
               if (constraints.maxWidth > 500) {
                 return Row(
                   children: [
-                    Expanded(child: _buildFormField('FULL NAME', _nameController)),
+                    Expanded(
+                      child: _buildFormField('FULL NAME', _nameController),
+                    ),
                     const SizedBox(width: 32),
-                    Expanded(child: _buildFormField('EMAIL ADDRESS', _emailController)),
+                    Expanded(
+                      child: _buildFormField('EMAIL ADDRESS', _emailController),
+                    ),
                   ],
                 );
               }
@@ -342,9 +354,13 @@ class _ProfilePageState extends State<ProfilePage> {
               if (constraints.maxWidth > 500) {
                 return Row(
                   children: [
-                    Expanded(child: _buildFormField('PHONE NUMBER', _phoneController)),
+                    Expanded(
+                      child: _buildFormField('PHONE NUMBER', _phoneController),
+                    ),
                     const SizedBox(width: 32),
-                    Expanded(child: _buildFormField('DATE OF BIRTH', _dobController)),
+                    Expanded(
+                      child: _buildFormField('DATE OF BIRTH', _dobController),
+                    ),
                   ],
                 );
               }
@@ -360,10 +376,7 @@ class _ProfilePageState extends State<ProfilePage> {
           const SizedBox(height: 32),
           _buildFormField('MAILING ADDRESS', _addressController),
           const SizedBox(height: 32),
-          ResponsiveButtons(
-            onSave: _saveProfile,
-            onDiscard: _loadProfile,
-          ),
+          ResponsiveButtons(onSave: _saveProfile, onDiscard: _loadProfile),
         ],
       ),
     );
@@ -394,7 +407,10 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           decoration: InputDecoration(
             isDense: true,
-            contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 4),
+            contentPadding: const EdgeInsets.symmetric(
+              vertical: 12,
+              horizontal: 4,
+            ),
             border: UnderlineInputBorder(
               borderSide: BorderSide(
                 color: PrestigeColors.outlineVariant.withOpacity(0.2),
@@ -471,7 +487,10 @@ class ResponsiveButtons extends StatelessWidget {
                 style: TextButton.styleFrom(
                   backgroundColor: PrestigeColors.surfaceContainerLow,
                   foregroundColor: PrestigeColors.onSurfaceVariant,
-                  padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 32),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 20,
+                    horizontal: 32,
+                  ),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(100),
                   ),
