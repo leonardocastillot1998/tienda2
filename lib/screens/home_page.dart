@@ -931,7 +931,7 @@ class _HomePageState extends State<HomePage> {
             ),
           );
         }
-        
+
         if (snapshot.hasError) {
           return Center(
             child: Padding(
@@ -975,7 +975,9 @@ class _HomePageState extends State<HomePage> {
               points,
               imageUrl,
               tag: tag,
-              tagColor: tag != null ? PrestigeColors.primaryContainer.withOpacity(0.2) : null,
+              tagColor: tag != null
+                  ? PrestigeColors.primaryContainer.withOpacity(0.2)
+                  : null,
               tagTextColor: tag != null ? PrestigeColors.primary : null,
             );
           }).toList(),
