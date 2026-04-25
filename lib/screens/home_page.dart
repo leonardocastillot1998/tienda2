@@ -6,6 +6,7 @@ import '../services/auth_service.dart';
 import 'login_page.dart';
 import 'profile_page.dart';
 import 'history_page.dart';
+import 'reward_details_page.dart';
 import '../theme/prestige_theme.dart';
 
 class HomePage extends StatefulWidget {
@@ -979,6 +980,20 @@ class _HomePageState extends State<HomePage> {
                   ? PrestigeColors.primaryContainer.withOpacity(0.2)
                   : null,
               tagTextColor: tag != null ? PrestigeColors.primary : null,
+              onTap: () {
+                Navigator.of(context)
+                    .push(
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            RewardDetailsPage(product: product),
+                      ),
+                    )
+                    .then((redeemed) {
+                      if (redeemed == true) {
+                        setState(() {});
+                      }
+                    });
+              },
             );
           }).toList(),
         );
@@ -993,88 +1008,95 @@ class _HomePageState extends State<HomePage> {
     String? tag,
     Color? tagColor,
     Color? tagTextColor,
+    VoidCallback? onTap,
   }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              color: PrestigeColors.surfaceContainerLowest,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
-                  blurRadius: 10,
-                  offset: const Offset(0, 4),
-                ),
-              ],
-            ),
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                ClipRRect(
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        color: Colors.transparent, // Ensures tap covers the whole area
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  child: Image.network(imageUrl, fit: BoxFit.cover),
+                  color: PrestigeColors.surfaceContainerLowest,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.05),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
                 ),
-                if (tag != null)
-                  Positioned(
-                    top: 12,
-                    right: 12,
-                    left: tag == 'Low Stock' ? 12 : null,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 4,
-                      ),
-                      decoration: BoxDecoration(
-                        color: tagColor,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Text(
-                        tag.toUpperCase(),
-                        style: TextStyle(
-                          fontSize: 10,
-                          fontWeight: FontWeight.bold,
-                          color: tagTextColor,
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Image.network(imageUrl, fit: BoxFit.cover),
+                    ),
+                    if (tag != null)
+                      Positioned(
+                        top: 12,
+                        right: 12,
+                        left: tag == 'Low Stock' ? 12 : null,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            color: tagColor,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Text(
+                            tag.toUpperCase(),
+                            style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                              color: tagTextColor,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-              ],
+                  ],
+                ),
+              ),
             ),
-          ),
-        ),
-        const SizedBox(height: 12),
-        Text(
-          title,
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
-        const SizedBox(height: 4),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
+            const SizedBox(height: 12),
             Text(
-              points,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Color(0xFFFFBA20),
-                fontSize: 12,
-              ),
+              title,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
-            const Text(
-              'VIEW DETAILS',
-              style: TextStyle(
-                fontSize: 10,
-                fontWeight: FontWeight.bold,
-                decoration: TextDecoration.underline,
-              ),
+            const SizedBox(height: 4),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  points,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFFFFBA20),
+                    fontSize: 12,
+                  ),
+                ),
+                const Text(
+                  'VIEW DETAILS',
+                  style: TextStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.bold,
+                    decoration: TextDecoration.underline,
+                  ),
+                ),
+              ],
             ),
           ],
         ),
-      ],
+      ),
     );
   }
 
