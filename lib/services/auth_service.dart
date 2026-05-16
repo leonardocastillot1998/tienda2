@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -21,6 +22,53 @@ class AuthResult {
 
 class AuthService {
   final _supabase = Supabase.instance.client;
+
+  Future<void> signInWithGitHub() async {
+    await _supabase.auth.signInWithOAuth(
+      OAuthProvider.github,
+      redirectTo: kIsWeb ? null : 'io.supabase.tienda2://login-callback',
+    );
+  }
+
+  Future<AuthResult> syncOAuthUser() async {
+    final user = _supabase.auth.currentUser;
+    if (user == null) {
+      return const AuthResult(success: false, error: 'No session found');
+    }
+
+    final username = user.email ?? user.id;
+
+    try {
+      final existingUser = await _supabase
+          .from('usuarios')
+          .select('points')
+          .eq('username', username)
+          .maybeSingle();
+
+      int points = 20;
+
+      if (existingUser == null) {
+        await _supabase.from('usuarios').insert({
+          'username': username,
+          'password': 'oauth_user_no_password',
+          'points': points,
+        });
+      } else {
+        points = existingUser['points'] as int;
+      }
+
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool(kLoggedInKey, true);
+      await prefs.setString(kUsernameKey, username);
+
+      return AuthResult(
+        success: true,
+        session: AuthSession(username: username, points: points),
+      );
+    } catch (e) {
+      return const AuthResult(success: false, error: 'Error syncing user data');
+    }
+  }
 
   Future<AuthSession?> checkSavedSession() async {
     final prefs = await SharedPreferences.getInstance();

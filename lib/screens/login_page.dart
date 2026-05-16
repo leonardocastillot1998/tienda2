@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../services/auth_service.dart';
 import '../theme/prestige_theme.dart';
@@ -22,15 +25,45 @@ class _LoginPageState extends State<LoginPage> {
   bool _isLoading = false;
   bool _obscurePassword = true;
   String? _error;
+  late final StreamSubscription<AuthState> _authStateSubscription;
 
   @override
   void initState() {
     super.initState();
     _checkSavedSession();
+
+    _authStateSubscription = Supabase.instance.client.auth.onAuthStateChange
+        .listen((data) async {
+          final event = data.event;
+          if (event == AuthChangeEvent.signedIn) {
+            setState(() => _isLoading = true);
+            final result = await widget.authService.syncOAuthUser();
+
+            if (!mounted) return;
+
+            if (result.success && result.session != null) {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (_) => HomePage(
+                    username: result.session!.username,
+                    puntos: result.session!.points,
+                    authService: widget.authService,
+                  ),
+                ),
+              );
+            } else {
+              setState(() {
+                _isLoading = false;
+                _error = result.error ?? 'Authentication failed';
+              });
+            }
+          }
+        });
   }
 
   @override
   void dispose() {
+    _authStateSubscription.cancel();
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
@@ -151,6 +184,8 @@ class _LoginPageState extends State<LoginPage> {
                                 },
                                 onSubmit: _login,
                                 onGoToRegister: _goToRegister,
+                                onGitHubLogin: () =>
+                                    widget.authService.signInWithGitHub(),
                               ),
                       ),
                     ),
@@ -283,6 +318,7 @@ class _LoginForm extends StatelessWidget {
     required this.onToggleObscure,
     required this.onSubmit,
     required this.onGoToRegister,
+    required this.onGitHubLogin,
   });
 
   final GlobalKey<FormState> formKey;
@@ -293,6 +329,7 @@ class _LoginForm extends StatelessWidget {
   final VoidCallback onToggleObscure;
   final VoidCallback onSubmit;
   final VoidCallback onGoToRegister;
+  final VoidCallback onGitHubLogin;
 
   @override
   Widget build(BuildContext context) {
@@ -368,6 +405,28 @@ class _LoginForm extends StatelessWidget {
           ),
           const SizedBox(height: 36),
           _PressScaleButton(onPressed: onSubmit, child: const Text('Log In')),
+          const SizedBox(height: 16),
+          SizedBox(
+            width: double.infinity,
+            child: OutlinedButton.icon(
+              onPressed: onGitHubLogin,
+              icon: const Text(
+                '🌟',
+              ), // Could use a custom icon here if preferred
+              label: const Text('Sign in with GitHub'),
+              style: OutlinedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                side: const BorderSide(
+                  color: PrestigeColors.outlineVariant,
+                  width: 1.5,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(999),
+                ),
+                foregroundColor: PrestigeColors.onSurface,
+              ),
+            ),
+          ),
           const SizedBox(height: 22),
           Align(
             child: Text.rich(

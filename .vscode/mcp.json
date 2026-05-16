@@ -1,9 +1,8 @@
 {
-	"servers": {
-		"supabase": {
-			"type": "http",
-			"url": "https://mcp.supabase.com/mcp?project_ref=jrwkxshvzbgcyosngzww&features=database,development,functions,storage"
-		}
-	},
-	"inputs": []
+  "servers": {
+    "supabase": {
+      "type": "http",
+      "url": "https://mcp.supabase.com/mcp?project_ref=jrwkxshvzbgcyosngzww"
+    }
+  }
 }
