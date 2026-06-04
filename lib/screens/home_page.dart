@@ -1188,7 +1188,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    Widget _buildBody() {
+    Widget buildBody() {
       if (_currentIndex == 1) return _buildCatalog();
       if (_currentIndex == 2) return const HistoryPage();
       if (_currentIndex == 3) {
@@ -1204,7 +1204,7 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: Theme.of(context).colorScheme.surface,
       extendBodyBehindAppBar: true,
       extendBody: true,
-      body: _buildBody(),
+      body: buildBody(),
       bottomNavigationBar: _buildBottomNavBar(),
     );
   }

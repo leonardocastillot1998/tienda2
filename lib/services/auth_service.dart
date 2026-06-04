@@ -27,6 +27,7 @@ class AuthService {
     await _supabase.auth.signInWithOAuth(
       OAuthProvider.github,
       redirectTo: kIsWeb ? null : 'io.supabase.tienda2://login-callback',
+      authScreenLaunchMode: LaunchMode.externalApplication,
     );
   }
 

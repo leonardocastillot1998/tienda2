@@ -441,10 +441,10 @@ class ResponsiveButtons extends StatelessWidget {
   final VoidCallback onDiscard;
 
   const ResponsiveButtons({
-    Key? key,
+    super.key,
     required this.onSave,
     required this.onDiscard,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
