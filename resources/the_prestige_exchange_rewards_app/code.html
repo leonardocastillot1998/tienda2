@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Login | The Prestige Exchange</title>
+<!-- Fonts & Icons -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "error-container": "#ffdad6",
+                      "primary": "#000000",
+                      "on-secondary-fixed-variant": "#5e4200",
+                      "on-background": "#191c1e",
+                      "surface-container-highest": "#e0e3e5",
+                      "secondary-fixed-dim": "#ffba20",
+                      "on-error": "#ffffff",
+                      "surface-dim": "#d8dadc",
+                      "surface": "#f7f9fb",
+                      "inverse-on-surface": "#eff1f3",
+                      "error": "#ba1a1a",
+                      "primary-fixed-dim": "#b9c7e4",
+                      "surface-variant": "#e0e3e5",
+                      "primary-fixed": "#d6e3ff",
+                      "on-secondary-container": "#6b4b00",
+                      "background": "#f7f9fb",
+                      "on-primary-fixed": "#0d1c32",
+                      "on-primary-container": "#76849f",
+                      "surface-container-high": "#e6e8ea",
+                      "outline": "#75777e",
+                      "tertiary-fixed-dim": "#b6c4ff",
+                      "on-tertiary": "#ffffff",
+                      "on-secondary-fixed": "#271900",
+                      "tertiary-container": "#00164e",
+                      "on-tertiary-container": "#6780d3",
+                      "outline-variant": "#c5c6cd",
+                      "on-error-container": "#93000a",
+                      "tertiary": "#000000",
+                      "secondary": "#7c5800",
+                      "on-tertiary-fixed": "#00164e",
+                      "secondary-container": "#feb700",
+                      "surface-tint": "#515f78",
+                      "on-secondary": "#ffffff",
+                      "inverse-primary": "#b9c7e4",
+                      "surface-container-low": "#f2f4f6",
+                      "on-primary": "#ffffff",
+                      "surface-bright": "#f7f9fb",
+                      "on-primary-fixed-variant": "#39475f",
+                      "secondary-fixed": "#ffdea8",
+                      "surface-container": "#eceef0",
+                      "primary-container": "#0d1c32",
+                      "surface-container-lowest": "#ffffff",
+                      "tertiary-fixed": "#dce1ff",
+                      "on-surface": "#191c1e",
+                      "on-tertiary-fixed-variant": "#264191",
+                      "inverse-surface": "#2d3133",
+                      "on-surface-variant": "#44474d"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "fontFamily": {
+                      "headline": ["Manrope"],
+                      "body": ["Inter"],
+                      "label": ["Inter"]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .ghost-border-input {
+            border: none;
+            border-bottom: 1px solid rgba(197, 198, 205, 0.2);
+            background: transparent;
+            border-radius: 0;
+            padding-left: 0;
+            padding-right: 0;
+        }
+        .ghost-border-input:focus {
+            box-shadow: none;
+            border-bottom: 2px solid #feb700;
+        }
+        .editorial-shadow {
+            box-shadow: 0 32px 64px -12px rgba(25, 28, 30, 0.06);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body min-h-screen flex flex-col md:flex-row overflow-hidden">
+<!-- Asymmetric Visual Anchor -->
+<section class="hidden md:flex md:w-5/12 lg:w-1/2 relative h-screen overflow-hidden">
+<img alt="Premium interior" class="absolute inset-0 w-full h-full object-cover" data-alt="Luxurious high-end lounge with velvet seating, golden accents, and soft atmospheric lighting through large windows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB35CLxFahV1r2Od6SiwzYTdeUkm9KzKCGX-kT1wZZd_sW7L-LEM-EHNy1SDWlcslvgFWbJG0Yo38b3AVPdoM8ojsJrbs0-LUp1nieOn7pudFVeQXdT23gkM-ZoVf3EYnKHdxaVoKIJjmJscqaN5clNs_-t_498BrDRteGyAx-GK-9XtoQgX2fMT6D8G1PZ9hvlPOH6_Tzs1TMgvRUqTtHIa6VVFCcWPCDOrHiXcqbDYJFRHGeTosvJjOkNm29wb8MuYpCSdFRxuw"/>
+<div class="absolute inset-0 bg-gradient-to-tr from-primary-container/80 via-transparent to-transparent"></div>
+<div class="relative z-10 p-16 mt-auto">
+<h1 class="font-headline font-extrabold text-white text-5xl tracking-tighter leading-none mb-4">
+                Curated Rewards.<br/>Exclusively Yours.
+            </h1>
+<p class="text-white/70 text-lg max-w-md font-body leading-relaxed">
+                Step back into a world where your loyalty is celebrated with bespoke craftsmanship and premium experiences.
+            </p>
+</div>
+</section>
+<!-- Login Canvas -->
+<main class="flex-1 flex items-center justify-center p-6 md:p-12 lg:p-24 bg-surface">
+<div class="w-full max-w-md space-y-12">
+<!-- Brand Identity -->
+<div class="space-y-3">
+<div class="flex items-center gap-2">
+<div class="w-10 h-10 bg-primary-container rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary-container" style="font-variation-settings: 'FILL' 1;">stars</span>
+</div>
+<span class="font-headline font-extrabold tracking-tighter text-xl text-primary">The Prestige Exchange</span>
+</div>
+<div class="pt-8">
+<h2 class="font-headline font-bold text-3xl text-on-surface tracking-tight">Welcome Back</h2>
+<p class="text-on-surface-variant mt-2 font-body">Please enter your credentials to access your vault.</p>
+</div>
+</div>
+<!-- Form Layer -->
+<form class="space-y-10">
+<div class="space-y-8">
+<!-- Email Field -->
+<div class="group">
+<label class="block text-[11px] font-label font-semibold uppercase tracking-[0.15em] text-on-surface-variant transition-colors group-focus-within:text-secondary" for="email">
+                            Email Address
+                        </label>
+<input class="w-full ghost-border-input py-3 text-on-surface placeholder:text-outline-variant/50 focus:outline-none" id="email" name="email" placeholder="name@prestige.com" required="" type="email"/>
+</div>
+<!-- Password Field -->
+<div class="group">
+<div class="flex justify-between items-end">
+<label class="block text-[11px] font-label font-semibold uppercase tracking-[0.15em] text-on-surface-variant transition-colors group-focus-within:text-secondary" for="password">
+                                Password
+                            </label>
+<a class="text-xs font-label font-medium text-secondary hover:opacity-80 transition-opacity" href="#">
+                                Forgot Password?
+                            </a>
+</div>
+<div class="relative">
+<input class="w-full ghost-border-input py-3 text-on-surface placeholder:text-outline-variant/50 focus:outline-none" id="password" name="password" placeholder="••••••••" required="" type="password"/>
+<button class="absolute right-0 top-1/2 -translate-y-1/2 text-on-surface-variant" type="button">
+<span class="material-symbols-outlined text-sm">visibility</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Action Button -->
+<button class="w-full bg-secondary-container text-on-secondary-container font-headline font-bold py-5 rounded-full editorial-shadow transition-all active:scale-[0.98] duration-200 hover:opacity-95" type="submit">
+                    Log In
+                </button>
+</form>
+<!-- Social/Secondary Intent -->
+<div class="space-y-6 pt-4">
+<div class="relative flex items-center">
+<div class="flex-grow border-t border-outline-variant/20"></div>
+<span class="flex-shrink mx-4 text-[10px] uppercase tracking-widest text-on-surface-variant font-label">Or continue with</span>
+<div class="flex-grow border-t border-outline-variant/20"></div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<button class="flex items-center justify-center gap-3 py-4 rounded-xl border border-outline-variant/20 hover:bg-surface-container-low transition-colors">
+<img alt="Google" class="w-5 h-5" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJsqSVh0nSZQ_-iTQpZzo4YP22XMrSWfJBVBlk91bsHm7BDIOoEmyaLQVuJRLvpiHrwCQ9MMWJwoZzIJz8tmdQSo0De3ntz9UDMPMwvR9aDOJlwrtcAD8jwYLclspb36ZLOq7uGim5d7OBmt0EpGbhJK8xF4s5xg6HDtgDw-ACK6vwTAZYlzmKuDm48JET0d3SMdikc789vN1VWMxieCxqMsqgexSMcehJKHC8BNxYcmyfho-FQQxVNKaUE_W3BEO9HWvVzT2iVA"/>
+<span class="text-sm font-semibold">Google</span>
+</button>
+<button class="flex items-center justify-center gap-3 py-4 rounded-xl border border-outline-variant/20 hover:bg-surface-container-low transition-colors">
+<img alt="Apple" class="w-5 h-5" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvXJjp4Kw0zwg0SV9KrZ6KQztMcTMgJf04YmNXqDqmm66egRKwHeH9mIC4hafbvmvMHzPEF1e50xW334flE9SSY-td1o2xndKCWIMbI2mm1OX9mOgu9FbihGrU36f4uR7PVWHxp5O9ujDexbFyZB43WlbXipGJ0cHWE87Wm9eKjQK73mgZw47ATq-byriIKeiecsvj8oMjv7lrA0lYEC1lTj6GQ9VIEQVG6OmRx87kmkIUGsMAviTdKmAfMxcc_8mJtGJOcSWpQQ"/>
+<span class="text-sm font-semibold">Apple</span>
+</button>
+</div>
+</div>
+<!-- Footer Signup -->
+<p class="text-center text-sm text-on-surface-variant font-body">
+                Not a member yet? 
+                <a class="text-primary font-bold hover:underline underline-offset-4 decoration-secondary transition-all" href="#">
+                    Sign Up
+                </a>
+</p>
+</div>
+</main>
+<!-- Decorative Element (Mobile Only) -->
+<div class="md:hidden fixed top-0 right-0 w-32 h-32 bg-secondary-container/10 rounded-full -mr-16 -mt-16 blur-3xl pointer-events-none"></div>
+<div class="md:hidden fixed bottom-0 left-0 w-48 h-48 bg-primary-container/5 rounded-full -ml-24 -mb-24 blur-3xl pointer-events-none"></div>
+</body></html>
