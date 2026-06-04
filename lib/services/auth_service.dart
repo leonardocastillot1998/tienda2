@@ -182,6 +182,12 @@ class AuthService {
   }
 
   Future<void> logout() async {
+    try {
+      await _supabase.auth.signOut();
+    } catch (e) {
+      debugPrint('Failed to sign out from Supabase: $e');
+    }
+
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(kLoggedInKey, false);
     await prefs.remove(kUsernameKey);
@@ -216,7 +222,7 @@ class AuthService {
     }
   }
 
-  Future<bool> updateUserProfile({
+  Future<String?> updateUserProfile({
     required String username,
     String? nombreCompleto,
     String? email,
@@ -225,19 +231,34 @@ class AuthService {
     String? address,
   }) async {
     try {
-      await _supabase
-          .from('usuarios')
-          .update({
-            'nombre_completo': nombreCompleto,
-            'email': email,
-            'numero_de_telefono': telefono,
-            'fecha_de_nacimiento': fechaNacimiento,
-            'address': address,
-          })
-          .eq('username', username);
-      return true;
+      final updates = <String, dynamic>{};
+
+      if (nombreCompleto != null && nombreCompleto.trim().isNotEmpty) {
+        updates['nombre_completo'] = nombreCompleto.trim();
+      }
+      if (email != null && email.trim().isNotEmpty) {
+        updates['email'] = email.trim();
+      }
+      if (telefono != null && telefono.trim().isNotEmpty) {
+        updates['numero_de_telefono'] = telefono.trim();
+      }
+      if (fechaNacimiento != null && fechaNacimiento.trim().isNotEmpty) {
+        updates['fecha_de_nacimiento'] = fechaNacimiento.trim();
+      }
+      if (address != null && address.trim().isNotEmpty) {
+        updates['address'] = address.trim();
+      }
+
+      if (updates.isEmpty) {
+        return null;
+      }
+
+      await _supabase.from('usuarios').update(updates).eq('username', username);
+      return null;
     } catch (e) {
-      return false;
+      // Ignore in production UI, but keep the actual error visible in debug logs.
+      debugPrint('Failed to update profile: $e');
+      return e.toString();
     }
   }
 }

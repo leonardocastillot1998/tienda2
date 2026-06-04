@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../theme/prestige_theme.dart';
 import '../services/auth_service.dart';
@@ -55,11 +56,13 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> _saveProfile() async {
+    FocusScope.of(context).unfocus();
+
     setState(() {
       _isLoading = true;
     });
 
-    final success = await widget.authService.updateUserProfile(
+    final error = await widget.authService.updateUserProfile(
       username: widget.username,
       nombreCompleto: _nameController.text,
       email: _emailController.text,
@@ -74,15 +77,66 @@ class _ProfilePageState extends State<ProfilePage> {
       });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(
-            success
-                ? 'Profile updated successfully'
-                : 'Failed to update profile',
-          ),
-          backgroundColor: success ? Colors.green : Colors.red,
+          content: Text(error == null ? 'Profile updated successfully' : error),
+          backgroundColor: error == null ? Colors.green : Colors.red,
         ),
       );
     }
+  }
+
+  Future<void> _pickDateOfBirth() async {
+    FocusScope.of(context).unfocus();
+
+    final now = DateTime.now();
+    final parsedCurrentDate = _parseDate(_dobController.text);
+    final initialDate =
+        parsedCurrentDate ?? DateTime(now.year - 18, now.month, now.day);
+
+    final selectedDate = await showDatePicker(
+      context: context,
+      initialDate: initialDate,
+      firstDate: DateTime(1900),
+      lastDate: now,
+      helpText: 'Select date of birth',
+      cancelText: 'Cancel',
+      confirmText: 'OK',
+    );
+
+    if (selectedDate != null && mounted) {
+      setState(() {
+        _dobController.text = _formatDate(selectedDate);
+      });
+    }
+  }
+
+  DateTime? _parseDate(String value) {
+    final text = value.trim();
+    if (text.isEmpty) {
+      return null;
+    }
+
+    final parsedIso = DateTime.tryParse(text);
+    if (parsedIso != null) {
+      return parsedIso;
+    }
+
+    final parts = text.split('/');
+    if (parts.length == 3) {
+      final day = int.tryParse(parts[0]);
+      final month = int.tryParse(parts[1]);
+      final year = int.tryParse(parts[2]);
+      if (day != null && month != null && year != null) {
+        return DateTime(year, month, day);
+      }
+    }
+
+    return null;
+  }
+
+  String _formatDate(DateTime date) {
+    final day = date.day.toString().padLeft(2, '0');
+    final month = date.month.toString().padLeft(2, '0');
+    return '${date.year}-$month-$day';
   }
 
   @override
@@ -354,21 +408,17 @@ class _ProfilePageState extends State<ProfilePage> {
               if (constraints.maxWidth > 500) {
                 return Row(
                   children: [
-                    Expanded(
-                      child: _buildFormField('PHONE NUMBER', _phoneController),
-                    ),
+                    Expanded(child: _buildPhoneField()),
                     const SizedBox(width: 32),
-                    Expanded(
-                      child: _buildFormField('DATE OF BIRTH', _dobController),
-                    ),
+                    Expanded(child: _buildDateField()),
                   ],
                 );
               }
               return Column(
                 children: [
-                  _buildFormField('PHONE NUMBER', _phoneController),
+                  _buildPhoneField(),
                   const SizedBox(height: 32),
-                  _buildFormField('DATE OF BIRTH', _dobController),
+                  _buildDateField(),
                 ],
               );
             },
@@ -400,6 +450,7 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
         TextField(
           controller: controller,
+          keyboardType: TextInputType.text,
           style: GoogleFonts.manrope(
             fontSize: 18,
             fontWeight: FontWeight.bold,
@@ -411,6 +462,88 @@ class _ProfilePageState extends State<ProfilePage> {
               vertical: 12,
               horizontal: 4,
             ),
+            border: UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: PrestigeColors.outlineVariant.withOpacity(0.2),
+                width: 2,
+              ),
+            ),
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: PrestigeColors.outlineVariant.withOpacity(0.2),
+                width: 2,
+              ),
+            ),
+            focusedBorder: const UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: PrestigeColors.secondaryContainer,
+                width: 2,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPhoneField() {
+    return _buildFormField('PHONE NUMBER', _phoneController);
+  }
+
+  Widget _buildDateField() {
+    return _buildFormFieldWithOptions(
+      label: 'DATE OF BIRTH',
+      controller: _dobController,
+      keyboardType: TextInputType.datetime,
+      readOnly: true,
+      onTap: _pickDateOfBirth,
+      suffixIcon: const Icon(Icons.calendar_month_outlined),
+    );
+  }
+
+  Widget _buildFormFieldWithOptions({
+    required String label,
+    required TextEditingController controller,
+    TextInputType? keyboardType,
+    List<TextInputFormatter>? inputFormatters,
+    bool readOnly = false,
+    VoidCallback? onTap,
+    Widget? suffixIcon,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 4.0, bottom: 8.0),
+          child: Text(
+            label,
+            style: GoogleFonts.inter(
+              fontSize: 12,
+              fontWeight: FontWeight.w900,
+              letterSpacing: -0.5,
+              color: PrestigeColors.onSurfaceVariant,
+            ),
+          ),
+        ),
+        TextField(
+          controller: controller,
+          keyboardType: keyboardType,
+          inputFormatters: inputFormatters,
+          readOnly: readOnly,
+          showCursor: !readOnly,
+          onTap: onTap,
+          style: GoogleFonts.manrope(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: PrestigeColors.onSurface,
+          ),
+          decoration: InputDecoration(
+            isDense: true,
+            contentPadding: const EdgeInsets.symmetric(
+              vertical: 12,
+              horizontal: 4,
+            ),
+            suffixIcon: suffixIcon,
             border: UnderlineInputBorder(
               borderSide: BorderSide(
                 color: PrestigeColors.outlineVariant.withOpacity(0.2),
