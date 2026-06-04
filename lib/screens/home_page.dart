@@ -983,16 +983,20 @@ class _HomePageState extends State<HomePage> {
               tagTextColor: tag != null ? PrestigeColors.primary : null,
               onTap: () {
                 Navigator.of(context)
-                    .push(
+                    .push<int?>(
                       MaterialPageRoute(
                         builder: (context) =>
                             RewardDetailsPage(product: product),
                       ),
                     )
-                    .then((redeemed) {
-                      if (redeemed == true) {
-                        setState(() {});
+                    .then((newBalance) {
+                      if (!mounted || newBalance == null) {
+                        return;
                       }
+
+                      setState(() {
+                        _puntos = newBalance;
+                      });
                     });
               },
             );

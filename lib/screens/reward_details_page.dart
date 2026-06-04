@@ -61,7 +61,7 @@ class _RewardDetailsPageState extends State<RewardDetailsPage> {
             TextButton(
               onPressed: () {
                 Navigator.of(ctx).pop();
-                Navigator.of(context).pop(true); // Return generic success
+                Navigator.of(context).pop(newPoints);
               },
               child: const Text(
                 'OK',
