@@ -228,3 +228,90 @@ La carpeta `resources/` contiene imágenes y archivos HTML de referencia para di
 - La URL y la `anon key` de Supabase están definidas en `lib/main.dart`.
 - El proyecto mezcla textos en español e inglés en algunas pantallas; eso refleja el estado actual del código.
 - Si quieres llevar este proyecto a producción, conviene mover credenciales sensibles a variables de entorno.
+
+## Evaluación Técnica y de Calidad (QA)
+
+### Compatibilidad y fragmentación
+
+- La app está construida con Flutter, así que la base del proyecto es compatible con Android, iOS, web, Windows, macOS y Linux.
+- En el código hay ajustes responsivos en algunas pantallas:
+  - `login_page.dart` adapta el layout con un panel lateral en escritorio.
+  - `profile_page.dart` usa `LayoutBuilder` para cambiar entre vista en columna y en filas.
+  - `history_page.dart` adapta la tarjeta de historial a móvil o escritorio.
+- Aun así, no todas las vistas tienen el mismo nivel de adaptación:
+  - `home_page.dart` mezcla paneles fijos, grids y navegación inferior, por lo que conviene validar tablets y pantallas pequeñas.
+  - `reward_details_page.dart` y `add_product_page.dart` usan layouts más lineales, útiles en móvil, pero necesitan revisión visual en tamaños grandes.
+- Recomendación QA:
+  - probar Android e iOS en al menos tres tamaños de pantalla,
+  - validar orientación vertical y horizontal,
+  - revisar cortes de texto, overflow y espacios en tablets.
+
+### Rendimiento y estrés
+
+- La app depende de varias cargas remotas desde Supabase:
+  - catálogo de productos,
+  - perfil del usuario,
+  - progreso de recompensas,
+  - historial guardado localmente.
+- Hay varios `FutureBuilder` y llamadas de red que se ejecutan al entrar a pantallas clave, por lo que el tiempo de carga depende de la conexión y de la latencia del backend.
+- Las imágenes del catálogo y de las recompensas se cargan desde red con `Image.network`, lo que puede afectar la experiencia si el ancho de banda es bajo.
+- No hay mediciones automáticas de:
+  - tiempo de arranque,
+  - FPS,
+  - uso de memoria,
+  - consumo de batería.
+- Recomendación QA:
+  - perfilar con Flutter DevTools,
+  - medir tiempos de carga en 3G/4G y Wi-Fi,
+  - observar memoria al navegar repetidamente entre catálogo, detalle e historial.
+
+### Comportamiento de red
+
+- La lógica de autenticación y datos usa bloques `try/catch`, así que la app intenta evitar cierres inesperados ante errores de red.
+- En varios métodos, cuando falla una consulta, el código devuelve `null`, una lista vacía o ignora el error para mantener la UI viva.
+- Esto hace que la app sea tolerante a fallos, pero también puede ocultar el problema real si la red está inestable.
+- No existe un modo offline completo:
+  - el catálogo depende de Supabase,
+  - el perfil depende de Supabase,
+  - el canje de puntos depende de Supabase,
+  - el historial y productos locales sí se leen desde `SharedPreferences`.
+- Recomendación QA:
+  - probar pérdida total de conexión,
+  - probar latencia alta y reconexión,
+  - mostrar mensajes de error más explícitos cuando una carga remota falle,
+  - considerar caché local para catálogo y perfil si se quiere soporte offline parcial.
+
+### Seguridad
+
+- La comunicación con Supabase se realiza sobre HTTPS, lo cual es correcto para transporte seguro.
+- Sin embargo, hay puntos importantes a mejorar:
+  - las contraseñas se almacenan en texto plano en la tabla `usuarios`,
+  - la opción `remember me` guarda credenciales en `SharedPreferences` sin cifrado adicional,
+  - la `anon key` está embebida en el cliente, lo cual es normal en Supabase, pero no debe tratarse como un secreto de backend,
+  - no se ve un cifrado local explícito para datos sensibles.
+- Los datos que maneja la app incluyen:
+  - usuario,
+  - email,
+  - teléfono,
+  - fecha de nacimiento,
+  - dirección,
+  - puntos,
+  - historial de canjes.
+- No aparecen datos bancarios en el código, pero sí hay información personal que debe tratarse con cuidado.
+- Recomendación QA:
+  - reemplazar contraseñas planas por autenticación real de Supabase Auth o un esquema con hash seguro en backend,
+  - evitar guardar contraseñas en preferencias locales,
+  - evaluar almacenamiento cifrado para datos sensibles,
+  - revisar políticas RLS en Supabase para limitar accesos por usuario,
+  - asegurar que todas las consultas dependan de la sesión correcta del usuario.
+
+### Conclusión QA
+
+- La base técnica es sólida para una app Flutter multiplataforma.
+- La mayor fortaleza actual es la estructura modular y el uso de Supabase.
+- Los principales riesgos están en:
+  - seguridad de credenciales,
+  - ausencia de modo offline,
+  - falta de métricas de rendimiento,
+  - cobertura responsiva desigual entre pantallas.
+- Para un siguiente paso de calidad, conviene priorizar seguridad y manejo de red antes de escalar funcionalidades nuevas.
