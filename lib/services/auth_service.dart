@@ -36,7 +36,14 @@ class AuthService {
       return const AuthResult(success: false, error: 'No session found');
     }
 
-    final username = user.email ?? user.id;
+    final metadata = user.userMetadata ?? {};
+    final username =
+        metadata['preferred_username'] ??
+        metadata['user_name'] ??
+        user.email?.split('@').first ??
+        user.id;
+    final fullName = metadata['full_name'] ?? metadata['name'];
+    final email = user.email;
 
     try {
       final existingUser = await _supabase
@@ -52,6 +59,8 @@ class AuthService {
           'username': username,
           'password': 'oauth_user_no_password',
           'points': points,
+          'email': email,
+          'nombre_completo': fullName,
         });
       } else {
         points = existingUser['points'] as int;
