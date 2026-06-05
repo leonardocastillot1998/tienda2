@@ -196,7 +196,7 @@ Cada canje o compra simulada agrega una entrada con:
 ### Instalación
 
 ```bash
-flutter pub get
+flutter pub get o flutter run -d chrome --web-port 3000
 ```
 
 ### Ejecución
