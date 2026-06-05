@@ -275,7 +275,7 @@ class _PurchasesPageState extends State<PurchasesPage> {
                                   ? Image.memory(
                                       base64Decode(imageData),
                                       fit: BoxFit.cover,
-                                      errorBuilder: (_, __, ___) =>
+                                      errorBuilder: (_, _, _) =>
                                           const Icon(Icons.image_not_supported),
                                     )
                                   : const Icon(Icons.image),

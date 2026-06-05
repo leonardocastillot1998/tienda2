@@ -208,7 +208,7 @@ class _HistoryPageState extends State<HistoryPage> {
                     const SizedBox(height: 24),
                   ],
                 );
-              }).toList(),
+              }),
 
             const SizedBox(height: 32),
 

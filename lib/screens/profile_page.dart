@@ -77,7 +77,7 @@ class _ProfilePageState extends State<ProfilePage> {
       });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(error == null ? 'Profile updated successfully' : error),
+          content: Text(error ?? 'Profile updated successfully'),
           backgroundColor: error == null ? Colors.green : Colors.red,
         ),
       );

@@ -1,4 +1,4 @@
-library app_links;
+library;
 
 import 'dart:async';
 

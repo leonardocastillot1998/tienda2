@@ -148,8 +148,10 @@ class _RewardDetailsPageState extends State<RewardDetailsPage> {
     final pointsCost = widget.product['points'] as int? ?? 0;
     final imageUrl = _resolveImageSource();
     final tag = widget.product['tag']?.toString();
-    final progressInfo =
-        AuthService.calculateRewardProgress(_userPoints, pointsCost);
+    final progressInfo = AuthService.calculateRewardProgress(
+      _userPoints,
+      pointsCost,
+    );
     final description =
         widget.product['description']?.toString() ??
         'A masterpiece of precision engineering and timeless design. The Chronograph Prestige Edition blends classic aesthetics with modern horological advancements, ensuring unparalleled accuracy.';
@@ -514,7 +516,7 @@ class _RewardDetailsPageState extends State<RewardDetailsPage> {
       return Image.network(
         source,
         fit: BoxFit.cover,
-        errorBuilder: (_, __, ___) => Container(
+        errorBuilder: (_, _, _) => Container(
           color: Colors.grey.shade200,
           child: const Center(child: Icon(Icons.broken_image_outlined)),
         ),
@@ -529,7 +531,7 @@ class _RewardDetailsPageState extends State<RewardDetailsPage> {
       return Image.memory(
         base64Decode(normalized),
         fit: BoxFit.cover,
-        errorBuilder: (_, __, ___) => Container(
+        errorBuilder: (_, _, _) => Container(
           color: Colors.grey.shade200,
           child: const Center(child: Icon(Icons.broken_image_outlined)),
         ),
