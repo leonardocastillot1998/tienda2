@@ -1,211 +1,285 @@
 # tienda / Client Loyalty
 
-Aplicación Flutter de fidelización de clientes conectada a Supabase. La app permite iniciar sesión, registrarse, ver el saldo de puntos, consultar recompensas, canjear productos, editar el perfil y revisar el historial de movimientos.
+Aplicacion Flutter de fidelizacion de clientes conectada a Supabase. La app permite iniciar sesion, registrarse, ver puntos, consultar recompensas, canjear productos, editar el perfil, revisar el historial y administrar productos locales.
 
-## Resumen del proyecto
+## Resumen
 
-Este proyecto está organizado alrededor de tres capas principales:
+El proyecto esta organizado en estas capas principales:
 
-1. `lib/main.dart` inicializa Flutter, configura Supabase y abre la pantalla de login.
-2. `lib/services/auth_service.dart` concentra la lógica de autenticación, sesión, persistencia local y acceso a datos remotos.
-3. `lib/screens/` contiene las pantallas principales de la experiencia de usuario.
+1. `lib/main.dart` inicializa Flutter y Supabase, aplica el tema y abre la pantalla de login.
+2. `lib/services/auth_service.dart` centraliza autenticacion, sesion, persistencia local y acceso a datos remotos.
+3. `lib/screens/` contiene las pantallas que forman la experiencia de usuario.
+4. `lib/theme/prestige_theme.dart` define colores, tipografias y estilos comunes.
 
-## Tecnologías usadas
+## Estructura del proyecto
 
-- Flutter
-- Dart 3.11+
-- Supabase Flutter
-- Shared Preferences
-- Google Fonts
-- File Picker
+- [`lib/main.dart`](lib/main.dart)
+- [`lib/theme/prestige_theme.dart`](lib/theme/prestige_theme.dart)
+- [`lib/services/auth_service.dart`](lib/services/auth_service.dart)
+- [`lib/screens/login_page.dart`](lib/screens/login_page.dart)
+- [`lib/screens/register_page.dart`](lib/screens/register_page.dart)
+- [`lib/screens/home_page.dart`](lib/screens/home_page.dart)
+- [`lib/screens/profile_page.dart`](lib/screens/profile_page.dart)
+- [`lib/screens/history_page.dart`](lib/screens/history_page.dart)
+- [`lib/screens/reward_details_page.dart`](lib/screens/reward_details_page.dart)
+- [`lib/screens/purchases_page.dart`](lib/screens/purchases_page.dart)
+- [`lib/screens/add_product_page.dart`](lib/screens/add_product_page.dart)
 
-## Estructura principal
+## Punto de entrada
 
-### Punto de entrada
+### [`lib/main.dart`](lib/main.dart)
 
-- [`lib/main.dart`](C:/Users/Asus/Desktop/Nueva carpeta (6)/tienda2-main/lib/main.dart)
-  - Inicializa Supabase con `Supabase.initialize(...)`.
-  - Crea `MyApp`.
-  - Aplica el tema visual `buildPrestigeTheme()`.
-  - Arranca en `LoginPage`.
+Este archivo:
 
-### Tema visual
+- inicializa `WidgetsFlutterBinding`;
+- configura Supabase con `Supabase.initialize(...)`;
+- crea `MyApp`;
+- aplica `buildPrestigeTheme()`;
+- arranca la app en `LoginPage`.
 
-- [`lib/theme/prestige_theme.dart`](C:/Users/Asus/Desktop/Nueva carpeta (6)/tienda2-main/lib/theme/prestige_theme.dart)
-  - Define la paleta de colores principal.
-  - Configura tipografías con `GoogleFonts`.
-  - Personaliza campos de texto y botones para mantener una apariencia consistente.
+## Tema visual
 
-### Servicio de autenticación y datos
+### [`lib/theme/prestige_theme.dart`](lib/theme/prestige_theme.dart)
 
-- [`lib/services/auth_service.dart`](C:/Users/Asus/Desktop/Nueva carpeta (6)/tienda2-main/lib/services/auth_service.dart)
-  - Inicio de sesión con usuario y contraseña.
-  - Registro de usuarios.
-  - Login con GitHub vía OAuth.
-  - Persistencia de sesión local con `SharedPreferences`.
-  - Lectura y actualización de perfil.
-  - Guardado de puntos en Supabase.
-  - Historial local por usuario.
-  - Productos personalizados locales por usuario.
-  - Cálculo de progreso hacia la recompensa más cercana.
+Define la identidad visual de la app:
+
+- paleta clara con acentos negro, azul oscuro y dorado;
+- tipografias `Inter` y `Manrope` con `GoogleFonts`;
+- estilos globales para `TextField` y `ElevatedButton`;
+- `ColorScheme` consistente para Material 3.
+
+## Logica principal
+
+### [`lib/services/auth_service.dart`](lib/services/auth_service.dart)
+
+Este servicio concentra la mayor parte de la logica de negocio.
+
+#### Autenticacion
+
+- `login(...)`: valida usuario y contrasena contra la tabla `usuarios`.
+- `register(...)`: crea un usuario nuevo con 20 puntos iniciales.
+- `signInWithGitHub()`: inicia OAuth con GitHub.
+- `syncOAuthUser()`: sincroniza el usuario OAuth con la tabla `usuarios`.
+- `checkSavedSession()`: recupera la sesion guardada en `SharedPreferences`.
+- `logout()`: cierra la sesion remota y limpia la sesion local.
+
+#### Perfil
+
+- `getUserProfile(username)`: obtiene nombre, correo, telefono, fecha de nacimiento, direccion y puntos.
+- `updateUserProfile(...)`: actualiza los campos editables del perfil.
+
+#### Puntos
+
+- `savePoints(...)`: persiste el nuevo saldo en Supabase.
+- `getClosestRewardProgress(currentPoints)`: calcula la recompensa mas cercana disponible.
+- `calculateClosestRewardProgress(...)`: version estatica del calculo anterior.
+- `calculateRewardProgress(...)`: calcula progreso para una recompensa puntual.
+
+#### Historial local
+
+- `addHistoryEntry(...)`: guarda un movimiento en `SharedPreferences`.
+- `getHistory(username)`: lee el historial de un usuario.
+- `clearHistory(username)`: borra el historial del usuario.
+
+#### Productos locales
+
+- `addCustomProduct(...)`: agrega un producto creado localmente.
+- `getCustomProducts(username)`: lee productos locales.
+- `updateCustomProduct(...)`: edita un producto local.
+- `deleteCustomProduct(...)`: elimina un producto local.
 
 ## Pantallas
 
 ### Login
 
-- [`lib/screens/login_page.dart`](C:/Users/Asus/Desktop/Nueva carpeta (6)/tienda2-main/lib/screens/login_page.dart)
-  - Formulario de acceso con usuario y contraseña.
-  - Opción de recordar credenciales.
-  - Inicio de sesión con GitHub.
-  - Verificación automática de sesión guardada.
+#### [`lib/screens/login_page.dart`](lib/screens/login_page.dart)
+
+Pantalla de acceso principal.
+
+- muestra formulario de usuario y contrasena;
+- permite recordar credenciales con `SharedPreferences`;
+- verifica si existe una sesion guardada y redirige automaticamente;
+- soporta login con GitHub;
+- adapta el layout para escritorio y movil.
 
 ### Registro
 
-- [`lib/screens/register_page.dart`](C:/Users/Asus/Desktop/Nueva carpeta (6)/tienda2-main/lib/screens/register_page.dart)
-  - Permite crear una cuenta nueva.
-  - Guarda sesión después del registro.
+#### [`lib/screens/register_page.dart`](lib/screens/register_page.dart)
+
+- crea una cuenta nueva;
+- valida usuario y contrasena;
+- redirige al `HomePage` despues del registro exitoso;
+- asigna 20 puntos iniciales.
 
 ### Home
 
-- [`lib/screens/home_page.dart`](C:/Users/Asus/Desktop/Nueva carpeta (6)/tienda2-main/lib/screens/home_page.dart)
-  - Vista principal de la app.
-  - Muestra saldo actual de puntos.
-  - Incluye navegación inferior entre Dashboard, Catálogo, Historial y Perfil.
-  - Permite canjear rápidamente una recompensa fija.
-  - Carga el catálogo desde Supabase.
-  - Calcula la recompensa más cercana a partir de los puntos del usuario.
+#### [`lib/screens/home_page.dart`](lib/screens/home_page.dart)
+
+Es la pantalla principal de la experiencia.
+
+- muestra saldo actual de puntos;
+- permite un canje rapido fijo desde el panel principal;
+- carga el catalogo de productos desde Supabase;
+- calcula la recompensa mas cercana con base en los puntos actuales;
+- ofrece navegacion inferior entre dashboard, catalogo, historial y perfil;
+- abre una vista de compras desde el boton flotante.
 
 ### Perfil
 
-- [`lib/screens/profile_page.dart`](C:/Users/Asus/Desktop/Nueva carpeta (6)/tienda2-main/lib/screens/profile_page.dart)
-  - Edita nombre, correo, teléfono, fecha de nacimiento y dirección.
-  - Muestra los puntos disponibles.
-  - Guarda cambios en Supabase.
+#### [`lib/screens/profile_page.dart`](lib/screens/profile_page.dart)
+
+- carga y muestra datos del usuario;
+- permite editar nombre, correo, telefono, fecha de nacimiento y direccion;
+- guarda cambios en Supabase;
+- usa layout responsivo para escritorio y movil.
 
 ### Historial
 
-- [`lib/screens/history_page.dart`](C:/Users/Asus/Desktop/Nueva carpeta (6)/tienda2-main/lib/screens/history_page.dart)
-  - Lee el historial local del usuario.
-  - Renderiza cada movimiento con imagen, estado, fecha y puntos gastados.
+#### [`lib/screens/history_page.dart`](lib/screens/history_page.dart)
+
+- lee el historial local del usuario actual;
+- renderiza cada movimiento con imagen, estado, fecha y puntos;
+- permite borrar el historial completo con confirmacion;
+- acepta imagenes desde URL, Base64 o datos ya normalizados.
 
 ### Detalle de recompensa
 
-- [`lib/screens/reward_details_page.dart`](C:/Users/Asus/Desktop/Nueva carpeta (6)/tienda2-main/lib/screens/reward_details_page.dart)
-  - Muestra información ampliada de una recompensa.
-  - Calcula si el usuario puede canjearla.
-  - Confirma el canje antes de descontar puntos.
-  - Registra la operación en el historial.
+#### [`lib/screens/reward_details_page.dart`](lib/screens/reward_details_page.dart)
+
+- muestra detalle visual de una recompensa;
+- valida si el usuario tiene puntos suficientes;
+- confirma el canje antes de ejecutarlo;
+- descuenta puntos en Supabase;
+- registra el movimiento en el historial local;
+- retorna el nuevo saldo al cerrar la pantalla.
 
 ### Mis productos
 
-- [`lib/screens/purchases_page.dart`](C:/Users/Asus/Desktop/Nueva carpeta (6)/tienda2-main/lib/screens/purchases_page.dart)
-  - Lista productos personalizados guardados localmente.
-  - Permite simular una compra y sumar puntos.
-  - Agrega el movimiento al historial.
+#### [`lib/screens/purchases_page.dart`](lib/screens/purchases_page.dart)
+
+- lista productos personalizados guardados localmente;
+- permite editar nombre, precio y puntos por compra;
+- permite eliminar productos locales;
+- simula una compra y suma puntos al usuario;
+- agrega el movimiento al historial local.
 
 ### Agregar producto
 
-- [`lib/screens/add_product_page.dart`](C:/Users/Asus/Desktop/Nueva carpeta (6)/tienda2-main/lib/screens/add_product_page.dart)
-  - Formulario para crear un producto local.
-  - Permite seleccionar una imagen desde el equipo.
-  - Convierte la imagen a Base64 para guardarla en preferencias locales.
+#### [`lib/screens/add_product_page.dart`](lib/screens/add_product_page.dart)
 
-## Flujo de la aplicación
+- crea productos locales nuevos;
+- permite seleccionar una imagen desde el equipo con `file_picker`;
+- convierte la imagen a Base64 para guardarla en memoria local;
+- guarda titulo, precio, puntos e imagen en `SharedPreferences`.
 
-1. La app inicia en login.
-2. Se verifica si existe una sesión guardada en `SharedPreferences`.
-3. Si hay sesión activa, se redirige al `HomePage`.
+## Flujo de la aplicacion
+
+1. La app arranca en `LoginPage`.
+2. Se valida si existe una sesion guardada.
+3. Si hay sesion activa, se redirige al `HomePage`.
 4. El usuario puede:
-   - iniciar sesión con usuario/contraseña,
-   - registrarse,
-   - conectarse con GitHub,
-   - revisar catálogo de recompensas,
-   - abrir detalle de una recompensa,
-   - canjear puntos,
-   - consultar historial,
-   - editar perfil,
-   - crear productos locales.
+   - iniciar sesion con usuario y contrasena;
+   - registrarse;
+   - autenticar con GitHub;
+   - revisar el catalogo de recompensas;
+   - abrir el detalle de una recompensa;
+   - canjear puntos;
+   - consultar el historial;
+   - editar su perfil;
+   - crear y administrar productos locales.
 
 ## Datos y almacenamiento
 
 ### Supabase
 
-La app usa dos tablas principales:
+El proyecto usa la tabla `usuarios` para autenticacion y perfil, y la tabla `productos` para el catalogo de recompensas.
 
-- `usuarios`
-  - `username`
-  - `password`
-  - `points`
-  - `email`
-  - `nombre_completo`
-  - `numero_de_telefono`
-  - `fecha_de_nacimiento`
-  - `address`
+#### `usuarios`
 
-- `productos`
-  - `title`
-  - `points`
-  - `image_url`
-  - `tag`
-  - `description`
+- `username`
+- `password`
+- `points`
+- `email`
+- `nombre_completo`
+- `numero_de_telefono`
+- `fecha_de_nacimiento`
+- `address`
+
+#### `productos`
+
+- `title`
+- `points`
+- `image_url`
+- `tag`
+- `description`
 
 ### Almacenamiento local
 
 Se usa `SharedPreferences` para:
 
-- recordar sesión del usuario,
-- guardar credenciales si el usuario activa "Remember me",
-- almacenar historial por usuario,
+- recordar sesion del usuario;
+- guardar credenciales si se activa "remember me";
+- almacenar historial por usuario;
 - guardar productos personalizados por usuario.
 
 ## Lógica importante
 
-### Cálculo de recompensas
+### Calculo de recompensas
 
-En `AuthService` existen dos métodos clave:
+La app calcula progreso y elegibilidad de canje con dos funciones:
 
 - `calculateClosestRewardProgress(currentPoints, products)`
-  - ordena los productos por puntos,
-  - busca la recompensa más cercana,
-  - calcula progreso, puntos faltantes y estado listo/no listo.
-
 - `calculateRewardProgress(currentPoints, rewardPoints)`
-  - calcula el progreso de un producto específico.
 
-Estas funciones son usadas por el dashboard, el catálogo y la pantalla de detalle para mostrar barras de progreso y mensajes dinámicos.
+Estas funciones se usan para:
+
+- mostrar barras de progreso;
+- indicar cuanta diferencia falta para canjear;
+- resaltar cuando ya existe una recompensa canjeable.
 
 ### Historial
 
 Cada canje o compra simulada agrega una entrada con:
 
-- fecha,
-- título,
-- descripción,
-- puntos gastados o ganados,
-- imagen,
+- fecha;
+- titulo;
+- descripcion;
+- puntos gastados o ganados;
+- imagen;
 - estado.
 
-## Configuración
+## Dependencias
 
-### Requisitos
+Definidas en [`pubspec.yaml`](pubspec.yaml):
+
+- `flutter`
+- `cupertino_icons`
+- `google_fonts`
+- `shared_preferences`
+- `supabase_flutter`
+- `file_picker`
+
+Tambien existe un override local para `app_links` en `packages/app_links`.
+
+## Requisitos
 
 - Flutter instalado.
 - Un proyecto Supabase activo.
 - Tablas `usuarios` y `productos` creadas en Supabase.
 
-### Instalación
+## Instalacion
 
 ```bash
-flutter pub get o flutter run -d chrome --web-port 3000
+flutter pub get
 ```
 
-### Ejecución
+## Ejecucion
 
 ```bash
 flutter run
 ```
 
-### Pruebas
+## Pruebas
 
 ```bash
 flutter test
@@ -213,21 +287,35 @@ flutter test
 
 ## Pruebas incluidas
 
-- [`test/widget_test.dart`](C:/Users/Asus/Desktop/Nueva carpeta (6)/tienda2-main/test/widget_test.dart)
-  - Verifica que se renderice la pantalla de login.
+- [`test/widget_test.dart`](test/widget_test.dart)
+  - valida que la pantalla base se renderice.
 
-- [`test/closest_reward_progress_test.dart`](C:/Users/Asus/Desktop/Nueva carpeta (6)/tienda2-main/test/closest_reward_progress_test.dart)
-  - Valida la lógica de cálculo de progreso de recompensas.
+- [`test/closest_reward_progress_test.dart`](test/closest_reward_progress_test.dart)
+  - valida la logica de calculo de progreso hacia recompensas.
 
-## Recursos del proyecto
+## Recursos
 
-La carpeta `resources/` contiene imágenes y archivos HTML de referencia para distintas pantallas y diseños. Sirve como documentación visual del producto.
+La carpeta `resources/` contiene pantallas de referencia, imagenes y archivos HTML que documentan el diseno y comportamiento esperado de diferentes vistas.
 
-## Observaciones
+## Observaciones tecnicas
 
-- La URL y la `anon key` de Supabase están definidas en `lib/main.dart`.
-- El proyecto mezcla textos en español e inglés en algunas pantallas; eso refleja el estado actual del código.
-- Si quieres llevar este proyecto a producción, conviene mover credenciales sensibles a variables de entorno.
+- La URL y la `anon key` de Supabase estan definidas en [`lib/main.dart`](lib/main.dart).
+- Las contrasenas se guardan en texto plano dentro de la tabla `usuarios`.
+- La opcion "remember me" guarda credenciales locales sin cifrado adicional.
+- Hay textos mezclados en ingles y espanol en algunas pantallas.
+- El proyecto es multiplataforma, pero conviene validar responsive en pantallas pequenas y escritorio.
+
+## Resumen final
+
+La aplicacion ya tiene una base modular clara:
+
+- autenticacion y persistencia en `AuthService`;
+- UI separada por pantallas;
+- tema visual global;
+- calculo reutilizable para puntos y recompensas;
+- historial y productos locales guardados en el dispositivo.
+
+Eso la deja lista para seguir creciendo con mejoras de seguridad, validacion y sincronizacion de datos.
 
 ## Evaluación Técnica y de Calidad (QA)
 
