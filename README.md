@@ -270,7 +270,7 @@ Tambien existe un override local para `app_links` en `packages/app_links`.
 ## Instalacion
 
 ```bash
-flutter pub get
+flutter pub get o flutter run -d chrome --web-port 3000
 ```
 
 ## Ejecucion
