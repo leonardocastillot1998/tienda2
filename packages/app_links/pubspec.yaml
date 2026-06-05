@@ -1,0 +1,10 @@
+name: app_links
+description: Local fallback implementation for app_links used by supabase_flutter.
+version: 7.0.0
+environment:
+  sdk: ">=3.3.0 <4.0.0"
+  flutter: ">=3.19.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
