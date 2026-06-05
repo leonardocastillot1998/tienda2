@@ -1,17 +1,27 @@
-<!DOCTYPE html><html class="light" lang="en"><head>
-<meta charset="utf-8">
-<meta content="width=device-width, initial-scale=1.0" name="viewport">
-<title>Catalog | The Prestige Exchange</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&amp;family=Inter:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
-<style>
-    body {
-      min-height: max(884px, 100dvh);
-    }
-  </style>
-  </head><body class="bg-surface font-body text-on-surface antialiased min-h-screen pb-32"><id id="tailwind-config">
-<script>
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Catalog | The Prestige Exchange</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&amp;family=Inter:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body class="bg-surface font-body text-on-surface antialiased min-h-screen pb-32">
+    <id id="tailwind-config">
+        <script>
             tailwind.config = {
                 darkMode: "class",
                 theme: {
@@ -80,204 +90,287 @@
                 }
             }
         </script>
-</id>
-<style>
+    </id>
+    <style>
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
+
         .glass-header {
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
         }
     </style>
-<!-- TopAppBar -->
-<header class="fixed top-0 w-full z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl border-b border-slate-200/15 shadow-sm flex justify-between items-center px-6 py-4">
-<div class="flex items-center gap-3">
-<img alt="User profile photo" class="w-10 h-10 rounded-full object-cover" data-alt="Close-up professional studio portrait of a confident man with a minimalist aesthetic background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2Zzi4ylBX1kv0mjWHSB-tEp5Zv44c8lB-JlmuZY7syhVSistsK4mgHAawaM4_dPINdbP5xokbhFNLQR3RJUF9y0iktgnc0eJe7fs9SHGv6j1IKrxVAaneuYqSiZN8AVG5CQfhnLXX1Z9I9SRKG2aPhXEt__g35c55iSdH4e7NZkAkxAxHhQUA1k4RtB8OUtKn7YcTfTBceN59mjbPxVRRzvBn4rD2_fcMy9IzNZAjHDkXFpvOqBpzu7-iYcm1b41XMxbTeRr-vA" style="">
-<h1 class="font-headline font-extrabold tracking-tighter text-[#0A192F] text-lg" style="">Client Loyalty</h1>
-</div>
-<button class="text-slate-500 hover:opacity-80 transition-opacity" style="">
-<span class="material-symbols-outlined" style="">notifications</span>
-</button>
-</header>
-<main class="pt-24 px-6 max-w-7xl mx-auto">
-<!-- Hero Section: Point Balance & Asymmetric Banner -->
-<section class="mb-12">
-<div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-end">
-<div class="md:col-span-5 mb-8 md:mb-0">
-<span class="font-label text-[11px] uppercase tracking-[0.2em] text-on-primary-container mb-2 block" style="">Your Reward Currency</span>
-<h2 class="font-headline font-bold text-5xl md:text-6xl text-primary tracking-tight leading-none mb-4" style="">
+    <!-- TopAppBar -->
+    <header
+        class="fixed top-0 w-full z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl border-b border-slate-200/15 shadow-sm flex justify-between items-center px-6 py-4">
+        <div class="flex items-center gap-3">
+            <img alt="User profile photo" class="w-10 h-10 rounded-full object-cover"
+                data-alt="Close-up professional studio portrait of a confident man with a minimalist aesthetic background"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2Zzi4ylBX1kv0mjWHSB-tEp5Zv44c8lB-JlmuZY7syhVSistsK4mgHAawaM4_dPINdbP5xokbhFNLQR3RJUF9y0iktgnc0eJe7fs9SHGv6j1IKrxVAaneuYqSiZN8AVG5CQfhnLXX1Z9I9SRKG2aPhXEt__g35c55iSdH4e7NZkAkxAxHhQUA1k4RtB8OUtKn7YcTfTBceN59mjbPxVRRzvBn4rD2_fcMy9IzNZAjHDkXFpvOqBpzu7-iYcm1b41XMxbTeRr-vA"
+                style="">
+            <h1 class="font-headline font-extrabold tracking-tighter text-[#0A192F] text-lg" style="">Client Loyalty
+            </h1>
+        </div>
+        <button class="text-slate-500 hover:opacity-80 transition-opacity" style="">
+            <span class="material-symbols-outlined" style="">notifications</span>
+        </button>
+    </header>
+    <main class="pt-24 px-6 max-w-7xl mx-auto">
+        <!-- Hero Section: Point Balance & Asymmetric Banner -->
+        <section class="mb-12">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-end">
+                <div class="md:col-span-5 mb-8 md:mb-0">
+                    <span class="font-label text-[11px] uppercase tracking-[0.2em] text-on-primary-container mb-2 block"
+                        style="">Your Reward Currency</span>
+                    <h2 class="font-headline font-bold text-5xl md:text-6xl text-primary tracking-tight leading-none mb-4"
+                        style="">
                         42,850 <span class="text-secondary text-2xl align-top" style="">pts</span>
-</h2>
-<p class="text-on-surface-variant max-w-xs text-sm leading-relaxed" style="">
-                        Elevate your lifestyle with curated experiences and premium products from our global concierge network.
+                    </h2>
+                    <p class="text-on-surface-variant max-w-xs text-sm leading-relaxed" style="">
+                        Elevate your lifestyle with curated experiences and premium products from our global concierge
+                        network.
                     </p>
-</div>
-<div class="md:col-span-7 relative group">
-<div class="bg-primary-container rounded-xl overflow-hidden aspect-[21/9] shadow-lg relative">
-<img alt="Featured Reward" class="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700" data-alt="Luxury resort swimming pool overlooking the ocean at sunset with warm orange and purple hues" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFlbiw8tyQJvbJU04Yv1FO6RF0h4WYf16oPIPmiP3fPD5FqxBHQD0oeqpqeM54zjXSZtYvVyJuAbNa_N2UACUMqXjWWBksHZ5tDVl2UpZRc0O3wwBpEKb_zobs_6Ed96Cx8d60c7Q3r68DAN6NWj0DZpuSDSFV3QeIX0E_FGh5d1DRi7UqKjtlTfvhLSMYI2I4sHwvzC1dQKG9kQMq4i8R96vuDWEcbdCOWiYT-vfzXIpB90mUh5tZLjRRE-Zmy_1AC_EGvpj4YA" style="">
-<div class="absolute inset-0 bg-gradient-to-t from-primary-container via-transparent to-transparent"></div>
-<div class="absolute bottom-6 left-6 right-6 flex justify-between items-end">
-<div>
-<span class="inline-block bg-secondary-container text-on-secondary-container text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest mb-2" style="">Featured Reward</span>
-<h3 class="font-headline font-bold text-2xl text-white" style="">The Amalfi Coast Getaway</h3>
-</div>
-<span class="font-headline font-bold text-white text-xl" style="">25,000 pts</span>
-</div>
-</div>
-</div>
-</div>
-</section>
-<!-- Search & Filter Bar -->
-<section class="mb-12">
-<div class="flex flex-col md:flex-row gap-6 md:items-center justify-between">
-<div class="flex gap-3 overflow-x-auto pb-2 md:pb-0 no-scrollbar">
-<button class="bg-[#0A192F] text-white px-6 py-2 rounded-full text-sm font-medium whitespace-nowrap" style="">All Rewards</button>
-<button class="bg-surface-container-low text-on-surface-variant px-6 py-2 rounded-full text-sm font-medium whitespace-nowrap hover:bg-surface-container-high transition-colors" style="">Travel</button>
-<button class="bg-surface-container-low text-on-surface-variant px-6 py-2 rounded-full text-sm font-medium whitespace-nowrap hover:bg-surface-container-high transition-colors" style="">Luxe Tech</button>
-<button class="bg-surface-container-low text-on-surface-variant px-6 py-2 rounded-full text-sm font-medium whitespace-nowrap hover:bg-surface-container-high transition-colors" style="">Dining</button>
-<button class="bg-surface-container-low text-on-surface-variant px-6 py-2 rounded-full text-sm font-medium whitespace-nowrap hover:bg-surface-container-high transition-colors" style="">Limited</button>
-</div>
-<div class="relative min-w-[300px]">
-<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline-variant" style="">search</span>
-<input class="w-full bg-transparent border-0 border-b border-outline-variant/20 focus:ring-0 focus:border-secondary transition-all pl-12 text-sm" placeholder="Search catalog..." type="text">
-</div>
-</div>
-</section>
-<!-- Reward Grid (Bento Style) -->
-<section class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
-<!-- Card 1 -->
-<div class="group">
-<div class="bg-surface-container-lowest rounded-lg overflow-hidden mb-4 shadow-sm group-hover:shadow-xl transition-all duration-300">
-<div class="aspect-[4/5] relative overflow-hidden">
-<img alt="Luxury Watch" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Minimalist white designer wristwatch on a matching light background with soft architectural shadows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDM0QX3Q3pZ3eYT52DvC5RHSUjQSgHqcHMe_q6eLmwXPBbC9MjgTDFOlX3llhF4CyVPVpu6yCPx9I0Ajfeq41dLfYVsJ1Xe7IJAC2AV1e4rybcBlONRVZEtUYBfmKuqz34KJk1a50xWdByShoFwHguPURSZ1Z0LJbXTeLdFB1d3H-wwFxfhREZSiRmcyCAQJ9MFsq5Ji01Fqm-APyhoz9EiMfdp-c0jalhksqUeI4R2HcNF0OYc1oIHDWqC7IjuE4HZG9pLGhZ-Jw" style="">
-<div class="absolute top-4 right-4">
-<span class="bg-primary-container/20 backdrop-blur-md text-primary px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest" style="">Luxe Tech</span>
-</div>
-</div>
-</div>
-<div class="px-1">
-<h4 class="font-headline font-bold text-lg text-on-surface mb-1" style="">Prestige Chronograph V1</h4>
-<div class="flex justify-between items-center">
-<span class="font-body text-secondary-fixed-dim font-bold" style="">12,500 pts</span>
-<button class="text-xs font-bold uppercase tracking-widest text-primary border-b border-primary/20 hover:border-primary transition-all" style="">View Details</button>
-</div>
-</div>
-</div>
-<!-- Card 2 -->
-<div class="group">
-<div class="bg-surface-container-lowest rounded-lg overflow-hidden mb-4 shadow-sm group-hover:shadow-xl transition-all duration-300">
-<div class="aspect-[4/5] relative overflow-hidden">
-<img alt="Barista Course" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Professional barista pouring latte art in a premium matte black cup, dark moody cafe aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPeb1qY-jZeZTE-gnMZf4q7mHAnVYmwJ2QanaBwT41X6KncgHG38CxUUnL-YNYBfbQ8-rU8SZH6FemR1-UENkzXMaK8hL0hgKh7hW17fy_7_puJ_HckKRJtPJAfcZ41gzGHQGF4G7Hs_sMuzyWkVGNm63uHvjWGdWkI6cd9cJwAFLc91wonakZwJ1wXj1OELwg2uElx8m-KDHN_rG3zPTUoR2IxIY1DDK69Fx6kQtV7RoFH6ha_0LTSl4WdTERe9ub71YmWH2T7w" style="">
-</div>
-</div>
-<div class="px-1">
-<h4 class="font-headline font-bold text-lg text-on-surface mb-1" style="">Masterclass: Artisan Brewing</h4>
-<div class="flex justify-between items-center">
-<span class="font-body text-secondary-fixed-dim font-bold" style="">4,200 pts</span>
-<button class="text-xs font-bold uppercase tracking-widest text-primary border-b border-primary/20 hover:border-primary transition-all" style="">View Details</button>
-</div>
-</div>
-</div>
-<!-- Card 3 -->
-<div class="group">
-<div class="bg-surface-container-lowest rounded-lg overflow-hidden mb-4 shadow-sm group-hover:shadow-xl transition-all duration-300">
-<div class="aspect-[4/5] relative overflow-hidden">
-<img alt="Audio Elite" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="High-end noise cancelling headphones resting on a marble desk with golden accent lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0gS0UkLY0dXg94AipFVj8p6rjCq2rBvOGi00cQj5_NIbIay6MWE1Xyrwg0ZeLyazSQ8bvEU3JS0JkvX9m0dOWbhx9COIg8oBroi1P3NdhAXRmkOcsWc7dI6kxZeKnIXkyM8MZi_J5_4KWikmopYMOmt0SJxxatNARNijGtHAw1dGN8eYalgqlGWWzL6O6V76asC__xNEcCNJ-ada4PgbOUD2HFof61jMQciEAAEGWStD6I_J0ACf0x7m3zP5VZc2y37JPY8eX7A" style="">
-<div class="absolute top-4 left-4">
-<span class="bg-error-container text-on-error-container px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest" style="">Low Stock</span>
-</div>
-</div>
-</div>
-<div class="px-1">
-<h4 class="font-headline font-bold text-lg text-on-surface mb-1" style="">Elite Audio Horizon S</h4>
-<div class="flex justify-between items-center">
-<span class="font-body text-secondary-fixed-dim font-bold" style="">8,900 pts</span>
-<button class="text-xs font-bold uppercase tracking-widest text-primary border-b border-primary/20 hover:border-primary transition-all" style="">View Details</button>
-</div>
-</div>
-</div>
-<!-- Card 4 -->
-<div class="group">
-<div class="bg-surface-container-lowest rounded-lg overflow-hidden mb-4 shadow-sm group-hover:shadow-xl transition-all duration-300">
-<div class="aspect-[4/5] relative overflow-hidden">
-<img alt="Michelin Dining" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Exotic gourmet dish with molecular gastronomy elements, plated on a dark slate dish with edible flowers" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwPMva_bzgp4r5vHwttE5M3_V43A8nRPk42fva-8J7TIYwC8QwMHaU-_RxAfpDVr9izS0pd9CTpfkmvWKmo7UUlJpUxZ8GCTJ48yFRNNfMUVDFXBJbVyKjmrkgSgcNr-QycLBq1yJR6JbnfW1UL67yJ_tlbPGwauA3qYa5le-dtmCss4oDs3yjGMSTb7m7fnVRBztCz7GDNyohabNp9DYyysg0Hjb93vY6AzFQFZawbqqfEXsfZ9UDHyB3Dv-20pMZSPp-SrwCGA" style="">
-</div>
-</div>
-<div class="px-1">
-<h4 class="font-headline font-bold text-lg text-on-surface mb-1" style="">Michelin Tasting Experience</h4>
-<div class="flex justify-between items-center">
-<span class="font-body text-secondary-fixed-dim font-bold" style="">15,000 pts</span>
-<button class="text-xs font-bold uppercase tracking-widest text-primary border-b border-primary/20 hover:border-primary transition-all" style="">View Details</button>
-</div>
-</div>
-</div>
-<!-- Card 5 (Asymmetric Wide Card) -->
-<div class="group md:col-span-2">
-<div class="bg-surface-container-lowest rounded-lg overflow-hidden mb-4 shadow-sm group-hover:shadow-xl transition-all duration-300 relative flex flex-col md:flex-row h-full">
-<div class="w-full md:w-1/2 aspect-video md:aspect-auto overflow-hidden">
-<img alt="Villa Stay" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Luxury minimalist villa interior with floor-to-ceiling windows showing a tropical forest at dawn" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOYMMLIcI736ZQwAffv6XFeGrgbcqfw3xfOXNND2LK1CIHuL1Yyx3raIJS7pQ2gLXk3sQrNzx78TluKVF_9u3Mu7XD5vGz33NGBC2dXD_H0RZsJadUz4-C7nqk_lgcMzFM1KE750rvBZwYY7xH_lZBpwVeCXhYTN6bm3PaIgrTQjAR6NwJyvo1UYnI_cIxNQ8_x_2tqTEfADawExufe6BukSlb3jVOHdbLA69MPddsLV2yR3oXtmmfn76wcR-zDNjb28XTiQhqhQ" style="">
-</div>
-<div class="p-8 flex flex-col justify-center">
-<span class="font-label text-[10px] uppercase tracking-widest text-secondary mb-2 block" style="">Premium Experience</span>
-<h4 class="font-headline font-bold text-2xl text-on-surface mb-4" style="">Ubud Sanctuary Weekend</h4>
-<p class="text-on-surface-variant text-sm mb-6 leading-relaxed" style="">Two nights of complete serenity in our premier private rainforest villa.</p>
-<div class="flex items-center gap-6">
-<span class="font-body text-2xl font-bold" style="">32,000 pts</span>
-<button class="bg-secondary-container text-on-secondary-container px-8 py-3 rounded-full text-xs font-bold uppercase tracking-widest transition-transform active:scale-95" style="">Redeem Now</button>
-</div>
-</div>
-</div>
-</div>
-<!-- Card 6 -->
-<div class="group">
-<div class="bg-surface-container-lowest rounded-lg overflow-hidden mb-4 shadow-sm group-hover:shadow-xl transition-all duration-300">
-<div class="aspect-[4/5] relative overflow-hidden">
-<img alt="Leather Bag" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Artisanal leather travel bag in rich tan brown sitting on a vintage wooden floor with natural light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDyg6GpWFPMiMJU2WfSEAGZm-tilGO8JQLM0uqxjzC_uVdyD_Y1ulM1_77udgrCt2xPCvpi5bLc5NAn7Ue-uP80w86103fVEUDXbzcSe_tlfG25H7Sb0Q7b_niI9c__O4e7T4V4OUMzgHJWLIz82Xd4-S9fqS8LBWvHnWwLGE9A_dJ8SQGpObq7N4P3yefezeYyNnUvk2JKW2zR5DJ6b5GWURDc0t0wG6D7lHVsKeW_-rGl_Z4MzlfW7j4k0dmg2aEIXHTgdrei6A" style="">
-</div>
-</div>
-<div class="px-1">
-<h4 class="font-headline font-bold text-lg text-on-surface mb-1" style="">Hand-stitched Weekender</h4>
-<div class="flex justify-between items-center">
-<span class="font-body text-secondary-fixed-dim font-bold" style="">18,400 pts</span>
-<button class="text-xs font-bold uppercase tracking-widest text-primary border-b border-primary/20 hover:border-primary transition-all" style="">View Details</button>
-</div>
-</div>
-</div>
-<!-- Card 7 -->
-<div class="group">
-<div class="bg-surface-container-lowest rounded-lg overflow-hidden mb-4 shadow-sm group-hover:shadow-xl transition-all duration-300">
-<div class="aspect-[4/5] relative overflow-hidden">
-<img alt="Supercar Drive" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Sleek modern red supercar dashboard with digital displays and carbon fiber details" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBdBHDqRp4CLqMCsOjA4vucvXTKMh3x1O6KXM18YJT6Bxs4dSNXH-7cRpVZTRaxaGHW8k828pJx_vybi_ZAhR7YzdkD39gw4Hc66gzFBnBxMHLjWti-uxOtpjTG7-AwPBlwEccxwHFm7XRwCNKlklNEXVDzPvwPGXxZqLwEfXY4Pe_uvS2vKJqwFFcPjKoLAuRdImvFSqSzKUJFt4LAFE0KhiYt3tIvx4e6iAcZeTy9vOqnCRW3tFhT39G0KvX_D04S5di7SofP0A" style="">
-</div>
-</div>
-<div class="px-1">
-<h4 class="font-headline font-bold text-lg text-on-surface mb-1" style="">Supercar Track Experience</h4>
-<div class="flex justify-between items-center">
-<span class="font-body text-secondary-fixed-dim font-bold" style="">22,000 pts</span>
-<button class="text-xs font-bold uppercase tracking-widest text-primary border-b border-primary/20 hover:border-primary transition-all" style="">View Details</button>
-</div>
-</div>
-</div>
-</section>
-</main>
-<!-- BottomNavBar -->
-<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-3 bg-white/90 dark:bg-slate-900/90 backdrop-blur-2xl rounded-t-[2rem] shadow-[0_-4px_20px_rgba(0,0,0,0.05)] z-50">
-<div class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 hover:text-[#feb700] transition-colors">
-<span class="material-symbols-outlined mb-1" style="">dashboard</span>
-<span class="font-['Inter'] font-medium text-[11px] uppercase tracking-widest" style="">Dashboard</span>
-</div>
-<div class="flex flex-col items-center justify-center bg-[#0A192F] dark:bg-[#feb700] text-white dark:text-[#0A192F] rounded-full px-5 py-2 transition-all scale-90 duration-300">
-<span class="material-symbols-outlined mb-1" style="">local_mall</span>
-<span class="font-['Inter'] font-medium text-[11px] uppercase tracking-widest" style="">Catalog</span>
-</div>
-<div class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 hover:text-[#feb700] transition-colors">
-<span class="material-symbols-outlined mb-1" style="">receipt_long</span>
-<span class="font-['Inter'] font-medium text-[11px] uppercase tracking-widest" style="">History</span>
-</div>
-<div class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 hover:text-[#feb700] transition-colors">
-<span class="material-symbols-outlined mb-1" style="">person</span>
-<span class="font-['Inter'] font-medium text-[11px] uppercase tracking-widest" style="">Profile</span>
-</div>
-</nav>
-</body></html>
+                </div>
+                <div class="md:col-span-7 relative group">
+                    <div class="bg-primary-container rounded-xl overflow-hidden aspect-[21/9] shadow-lg relative">
+                        <img alt="Featured Reward"
+                            class="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700"
+                            data-alt="Luxury resort swimming pool overlooking the ocean at sunset with warm orange and purple hues"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFlbiw8tyQJvbJU04Yv1FO6RF0h4WYf16oPIPmiP3fPD5FqxBHQD0oeqpqeM54zjXSZtYvVyJuAbNa_N2UACUMqXjWWBksHZ5tDVl2UpZRc0O3wwBpEKb_zobs_6Ed96Cx8d60c7Q3r68DAN6NWj0DZpuSDSFV3QeIX0E_FGh5d1DRi7UqKjtlTfvhLSMYI2I4sHwvzC1dQKG9kQMq4i8R96vuDWEcbdCOWiYT-vfzXIpB90mUh5tZLjRRE-Zmy_1AC_EGvpj4YA"
+                            style="">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-primary-container via-transparent to-transparent">
+                        </div>
+                        <div class="absolute bottom-6 left-6 right-6 flex justify-between items-end">
+                            <div>
+                                <span
+                                    class="inline-block bg-secondary-container text-on-secondary-container text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest mb-2"
+                                    style="">Featured Reward</span>
+                                <h3 class="font-headline font-bold text-2xl text-white" style="">The Amalfi Coast
+                                    Getaway</h3>
+                            </div>
+                            <span class="font-headline font-bold text-white text-xl" style="">25,000 pts</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Search & Filter Bar -->
+        <section class="mb-12">
+            <div class="flex flex-col md:flex-row gap-6 md:items-center justify-between">
+                <div class="relative min-w-[300px]">
+                    <span
+                        class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline-variant"
+                        style="">search</span>
+                    <input
+                        class="w-full bg-transparent border-0 border-b border-outline-variant/20 focus:ring-0 focus:border-secondary transition-all pl-12 text-sm"
+                        placeholder="Search catalog..." type="text">
+                </div>
+            </div>
+        </section>
+        <!-- Reward Grid (Bento Style) -->
+        <section class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            <!-- Card 1 -->
+            <div class="group">
+                <div
+                    class="bg-surface-container-lowest rounded-lg overflow-hidden mb-4 shadow-sm group-hover:shadow-xl transition-all duration-300">
+                    <div class="aspect-[4/5] relative overflow-hidden">
+                        <img alt="Luxury Watch"
+                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                            data-alt="Minimalist white designer wristwatch on a matching light background with soft architectural shadows"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDM0QX3Q3pZ3eYT52DvC5RHSUjQSgHqcHMe_q6eLmwXPBbC9MjgTDFOlX3llhF4CyVPVpu6yCPx9I0Ajfeq41dLfYVsJ1Xe7IJAC2AV1e4rybcBlONRVZEtUYBfmKuqz34KJk1a50xWdByShoFwHguPURSZ1Z0LJbXTeLdFB1d3H-wwFxfhREZSiRmcyCAQJ9MFsq5Ji01Fqm-APyhoz9EiMfdp-c0jalhksqUeI4R2HcNF0OYc1oIHDWqC7IjuE4HZG9pLGhZ-Jw"
+                            style="">
+                        <div class="absolute top-4 right-4">
+                            <span
+                                class="bg-primary-container/20 backdrop-blur-md text-primary px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest"
+                                style="">Luxe Tech</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="px-1">
+                    <h4 class="font-headline font-bold text-lg text-on-surface mb-1" style="">Prestige Chronograph V1
+                    </h4>
+                    <div class="flex justify-between items-center">
+                        <span class="font-body text-secondary-fixed-dim font-bold" style="">12,500 pts</span>
+                        <button
+                            class="text-xs font-bold uppercase tracking-widest text-primary border-b border-primary/20 hover:border-primary transition-all"
+                            style="">View Details</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Card 2 -->
+            <div class="group">
+                <div
+                    class="bg-surface-container-lowest rounded-lg overflow-hidden mb-4 shadow-sm group-hover:shadow-xl transition-all duration-300">
+                    <div class="aspect-[4/5] relative overflow-hidden">
+                        <img alt="Barista Course"
+                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                            data-alt="Professional barista pouring latte art in a premium matte black cup, dark moody cafe aesthetic"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPeb1qY-jZeZTE-gnMZf4q7mHAnVYmwJ2QanaBwT41X6KncgHG38CxUUnL-YNYBfbQ8-rU8SZH6FemR1-UENkzXMaK8hL0hgKh7hW17fy_7_puJ_HckKRJtPJAfcZ41gzGHQGF4G7Hs_sMuzyWkVGNm63uHvjWGdWkI6cd9cJwAFLc91wonakZwJ1wXj1OELwg2uElx8m-KDHN_rG3zPTUoR2IxIY1DDK69Fx6kQtV7RoFH6ha_0LTSl4WdTERe9ub71YmWH2T7w"
+                            style="">
+                    </div>
+                </div>
+                <div class="px-1">
+                    <h4 class="font-headline font-bold text-lg text-on-surface mb-1" style="">Masterclass: Artisan
+                        Brewing</h4>
+                    <div class="flex justify-between items-center">
+                        <span class="font-body text-secondary-fixed-dim font-bold" style="">4,200 pts</span>
+                        <button
+                            class="text-xs font-bold uppercase tracking-widest text-primary border-b border-primary/20 hover:border-primary transition-all"
+                            style="">View Details</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Card 3 -->
+            <div class="group">
+                <div
+                    class="bg-surface-container-lowest rounded-lg overflow-hidden mb-4 shadow-sm group-hover:shadow-xl transition-all duration-300">
+                    <div class="aspect-[4/5] relative overflow-hidden">
+                        <img alt="Audio Elite"
+                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                            data-alt="High-end noise cancelling headphones resting on a marble desk with golden accent lighting"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0gS0UkLY0dXg94AipFVj8p6rjCq2rBvOGi00cQj5_NIbIay6MWE1Xyrwg0ZeLyazSQ8bvEU3JS0JkvX9m0dOWbhx9COIg8oBroi1P3NdhAXRmkOcsWc7dI6kxZeKnIXkyM8MZi_J5_4KWikmopYMOmt0SJxxatNARNijGtHAw1dGN8eYalgqlGWWzL6O6V76asC__xNEcCNJ-ada4PgbOUD2HFof61jMQciEAAEGWStD6I_J0ACf0x7m3zP5VZc2y37JPY8eX7A"
+                            style="">
+                        <div class="absolute top-4 left-4">
+                            <span
+                                class="bg-error-container text-on-error-container px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest"
+                                style="">Low Stock</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="px-1">
+                    <h4 class="font-headline font-bold text-lg text-on-surface mb-1" style="">Elite Audio Horizon S</h4>
+                    <div class="flex justify-between items-center">
+                        <span class="font-body text-secondary-fixed-dim font-bold" style="">8,900 pts</span>
+                        <button
+                            class="text-xs font-bold uppercase tracking-widest text-primary border-b border-primary/20 hover:border-primary transition-all"
+                            style="">View Details</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Card 4 -->
+            <div class="group">
+                <div
+                    class="bg-surface-container-lowest rounded-lg overflow-hidden mb-4 shadow-sm group-hover:shadow-xl transition-all duration-300">
+                    <div class="aspect-[4/5] relative overflow-hidden">
+                        <img alt="Michelin Dining"
+                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                            data-alt="Exotic gourmet dish with molecular gastronomy elements, plated on a dark slate dish with edible flowers"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwPMva_bzgp4r5vHwttE5M3_V43A8nRPk42fva-8J7TIYwC8QwMHaU-_RxAfpDVr9izS0pd9CTpfkmvWKmo7UUlJpUxZ8GCTJ48yFRNNfMUVDFXBJbVyKjmrkgSgcNr-QycLBq1yJR6JbnfW1UL67yJ_tlbPGwauA3qYa5le-dtmCss4oDs3yjGMSTb7m7fnVRBztCz7GDNyohabNp9DYyysg0Hjb93vY6AzFQFZawbqqfEXsfZ9UDHyB3Dv-20pMZSPp-SrwCGA"
+                            style="">
+                    </div>
+                </div>
+                <div class="px-1">
+                    <h4 class="font-headline font-bold text-lg text-on-surface mb-1" style="">Michelin Tasting
+                        Experience</h4>
+                    <div class="flex justify-between items-center">
+                        <span class="font-body text-secondary-fixed-dim font-bold" style="">15,000 pts</span>
+                        <button
+                            class="text-xs font-bold uppercase tracking-widest text-primary border-b border-primary/20 hover:border-primary transition-all"
+                            style="">View Details</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Card 5 (Asymmetric Wide Card) -->
+            <div class="group md:col-span-2">
+                <div
+                    class="bg-surface-container-lowest rounded-lg overflow-hidden mb-4 shadow-sm group-hover:shadow-xl transition-all duration-300 relative flex flex-col md:flex-row h-full">
+                    <div class="w-full md:w-1/2 aspect-video md:aspect-auto overflow-hidden">
+                        <img alt="Villa Stay"
+                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                            data-alt="Luxury minimalist villa interior with floor-to-ceiling windows showing a tropical forest at dawn"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOYMMLIcI736ZQwAffv6XFeGrgbcqfw3xfOXNND2LK1CIHuL1Yyx3raIJS7pQ2gLXk3sQrNzx78TluKVF_9u3Mu7XD5vGz33NGBC2dXD_H0RZsJadUz4-C7nqk_lgcMzFM1KE750rvBZwYY7xH_lZBpwVeCXhYTN6bm3PaIgrTQjAR6NwJyvo1UYnI_cIxNQ8_x_2tqTEfADawExufe6BukSlb3jVOHdbLA69MPddsLV2yR3oXtmmfn76wcR-zDNjb28XTiQhqhQ"
+                            style="">
+                    </div>
+                    <div class="p-8 flex flex-col justify-center">
+                        <span class="font-label text-[10px] uppercase tracking-widest text-secondary mb-2 block"
+                            style="">Premium Experience</span>
+                        <h4 class="font-headline font-bold text-2xl text-on-surface mb-4" style="">Ubud Sanctuary
+                            Weekend</h4>
+                        <p class="text-on-surface-variant text-sm mb-6 leading-relaxed" style="">Two nights of complete
+                            serenity in our premier private rainforest villa.</p>
+                        <div class="flex items-center gap-6">
+                            <span class="font-body text-2xl font-bold" style="">32,000 pts</span>
+                            <button
+                                class="bg-secondary-container text-on-secondary-container px-8 py-3 rounded-full text-xs font-bold uppercase tracking-widest transition-transform active:scale-95"
+                                style="">Redeem Now</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Card 6 -->
+            <div class="group">
+                <div
+                    class="bg-surface-container-lowest rounded-lg overflow-hidden mb-4 shadow-sm group-hover:shadow-xl transition-all duration-300">
+                    <div class="aspect-[4/5] relative overflow-hidden">
+                        <img alt="Leather Bag"
+                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                            data-alt="Artisanal leather travel bag in rich tan brown sitting on a vintage wooden floor with natural light"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDyg6GpWFPMiMJU2WfSEAGZm-tilGO8JQLM0uqxjzC_uVdyD_Y1ulM1_77udgrCt2xPCvpi5bLc5NAn7Ue-uP80w86103fVEUDXbzcSe_tlfG25H7Sb0Q7b_niI9c__O4e7T4V4OUMzgHJWLIz82Xd4-S9fqS8LBWvHnWwLGE9A_dJ8SQGpObq7N4P3yefezeYyNnUvk2JKW2zR5DJ6b5GWURDc0t0wG6D7lHVsKeW_-rGl_Z4MzlfW7j4k0dmg2aEIXHTgdrei6A"
+                            style="">
+                    </div>
+                </div>
+                <div class="px-1">
+                    <h4 class="font-headline font-bold text-lg text-on-surface mb-1" style="">Hand-stitched Weekender
+                    </h4>
+                    <div class="flex justify-between items-center">
+                        <span class="font-body text-secondary-fixed-dim font-bold" style="">18,400 pts</span>
+                        <button
+                            class="text-xs font-bold uppercase tracking-widest text-primary border-b border-primary/20 hover:border-primary transition-all"
+                            style="">View Details</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Card 7 -->
+            <div class="group">
+                <div
+                    class="bg-surface-container-lowest rounded-lg overflow-hidden mb-4 shadow-sm group-hover:shadow-xl transition-all duration-300">
+                    <div class="aspect-[4/5] relative overflow-hidden">
+                        <img alt="Supercar Drive"
+                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                            data-alt="Sleek modern red supercar dashboard with digital displays and carbon fiber details"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBdBHDqRp4CLqMCsOjA4vucvXTKMh3x1O6KXM18YJT6Bxs4dSNXH-7cRpVZTRaxaGHW8k828pJx_vybi_ZAhR7YzdkD39gw4Hc66gzFBnBxMHLjWti-uxOtpjTG7-AwPBlwEccxwHFm7XRwCNKlklNEXVDzPvwPGXxZqLwEfXY4Pe_uvS2vKJqwFFcPjKoLAuRdImvFSqSzKUJFt4LAFE0KhiYt3tIvx4e6iAcZeTy9vOqnCRW3tFhT39G0KvX_D04S5di7SofP0A"
+                            style="">
+                    </div>
+                </div>
+                <div class="px-1">
+                    <h4 class="font-headline font-bold text-lg text-on-surface mb-1" style="">Supercar Track Experience
+                    </h4>
+                    <div class="flex justify-between items-center">
+                        <span class="font-body text-secondary-fixed-dim font-bold" style="">22,000 pts</span>
+                        <button
+                            class="text-xs font-bold uppercase tracking-widest text-primary border-b border-primary/20 hover:border-primary transition-all"
+                            style="">View Details</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <!-- BottomNavBar -->
+    <nav
+        class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-3 bg-white/90 dark:bg-slate-900/90 backdrop-blur-2xl rounded-t-[2rem] shadow-[0_-4px_20px_rgba(0,0,0,0.05)] z-50">
+        <div
+            class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 hover:text-[#feb700] transition-colors">
+            <span class="material-symbols-outlined mb-1" style="">dashboard</span>
+            <span class="font-['Inter'] font-medium text-[11px] uppercase tracking-widest" style="">Dashboard</span>
+        </div>
+        <div
+            class="flex flex-col items-center justify-center bg-[#0A192F] dark:bg-[#feb700] text-white dark:text-[#0A192F] rounded-full px-5 py-2 transition-all scale-90 duration-300">
+            <span class="material-symbols-outlined mb-1" style="">local_mall</span>
+            <span class="font-['Inter'] font-medium text-[11px] uppercase tracking-widest" style="">Catalog</span>
+        </div>
+        <div
+            class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 hover:text-[#feb700] transition-colors">
+            <span class="material-symbols-outlined mb-1" style="">receipt_long</span>
+            <span class="font-['Inter'] font-medium text-[11px] uppercase tracking-widest" style="">History</span>
+        </div>
+        <div
+            class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 hover:text-[#feb700] transition-colors">
+            <span class="material-symbols-outlined mb-1" style="">person</span>
+            <span class="font-['Inter'] font-medium text-[11px] uppercase tracking-widest" style="">Profile</span>
+        </div>
+    </nav>
+</body>
+
+</html>

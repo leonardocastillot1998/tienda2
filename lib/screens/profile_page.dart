@@ -173,27 +173,7 @@ class _ProfilePageState extends State<ProfilePage> {
             color: const Color(0xFF0A192F),
           ),
         ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 24.0, left: 8.0),
-            child: Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                color: PrestigeColors.surfaceContainerLowest,
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: PrestigeColors.secondaryContainer,
-                  width: 2,
-                ),
-              ),
-              child: const Icon(
-                Icons.person,
-                color: PrestigeColors.primaryContainer,
-              ),
-            ),
-          ),
-        ],
+        actions: const [],
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -278,31 +258,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
             ),
-            Positioned(
-              bottom: -16,
-              right: -16,
-              child: GestureDetector(
-                onTap: () {},
-                child: Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: PrestigeColors.secondaryContainer,
-                    borderRadius: BorderRadius.circular(16),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 20,
-                        offset: const Offset(0, 10),
-                      ),
-                    ],
-                  ),
-                  child: Icon(
-                    Icons.edit_outlined,
-                    color: PrestigeColors.onSecondaryContainer,
-                  ),
-                ),
-              ),
-            ),
+
           ],
         ),
         const SizedBox(height: 32),

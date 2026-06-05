@@ -124,13 +124,6 @@ class _HistoryPageState extends State<HistoryPage> {
               ),
               actions: [
                 IconButton(
-                  icon: const Icon(
-                    Icons.more_vert,
-                    color: PrestigeColors.primaryContainer,
-                  ),
-                  onPressed: () {},
-                ),
-                IconButton(
                   tooltip: 'Borrar historial',
                   icon: const Icon(
                     Icons.delete_outline,

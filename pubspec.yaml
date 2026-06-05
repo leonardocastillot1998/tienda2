@@ -38,10 +38,7 @@ dependencies:
   shared_preferences: ^2.2.0
   supabase_flutter: ^2.12.4
   file_picker: ^8.3.7
-
-dependency_overrides:
-  app_links:
-    path: packages/app_links
+  app_links: ^6.4.0
 
 dev_dependencies:
   flutter_test:

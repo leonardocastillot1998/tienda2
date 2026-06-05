@@ -115,10 +115,6 @@ class _HomePageState extends State<HomePage> {
             _buildDashboardRewardBoard(),
             const SizedBox(height: 32),
             _buildQuickActionsGrid(),
-            const SizedBox(height: 32),
-            _buildRecentActivity(),
-            const SizedBox(height: 32),
-            _buildRecommendedReward(),
           ],
         ),
         _buildGlassAppBar(),
@@ -130,11 +126,15 @@ class _HomePageState extends State<HomePage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Bienvenido, ${widget.username}',
-          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: PrestigeColors.primary,
+        FittedBox(
+          fit: BoxFit.scaleDown,
+          alignment: Alignment.centerLeft,
+          child: Text(
+            'Bienvenido, ${widget.username}',
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: PrestigeColors.primary,
+            ),
           ),
         ),
         const SizedBox(height: 24),
@@ -775,8 +775,6 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(height: 48),
             _buildRewardProgress(),
             const SizedBox(height: 48),
-            _buildSearchAndFilters(),
-            const SizedBox(height: 48),
             _buildRewardsGrid(),
           ],
         ),
@@ -978,69 +976,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildSearchAndFilters() {
-    return Column(
-      children: [
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: [
-              _buildFilterChip('All Rewards', true),
-              const SizedBox(width: 12),
-              _buildFilterChip('Travel', false),
-              const SizedBox(width: 12),
-              _buildFilterChip('Luxe Tech', false),
-              const SizedBox(width: 12),
-              _buildFilterChip('Dining', false),
-              const SizedBox(width: 12),
-              _buildFilterChip('Limited', false),
-            ],
-          ),
-        ),
-        const SizedBox(height: 24),
-        TextField(
-          decoration: InputDecoration(
-            hintText: 'Search catalog...',
-            prefixIcon: const Icon(
-              Icons.search,
-              color: PrestigeColors.outlineVariant,
-            ),
-            border: const UnderlineInputBorder(
-              borderSide: BorderSide(color: PrestigeColors.outlineVariant),
-            ),
-            enabledBorder: UnderlineInputBorder(
-              borderSide: BorderSide(
-                color: PrestigeColors.outlineVariant.withOpacity(0.5),
-              ),
-            ),
-            focusedBorder: const UnderlineInputBorder(
-              borderSide: BorderSide(color: PrestigeColors.secondary),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 
-  Widget _buildFilterChip(String label, bool isSelected) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-      decoration: BoxDecoration(
-        color: isSelected
-            ? PrestigeColors.primaryContainer
-            : PrestigeColors.surfaceContainerLow,
-        borderRadius: BorderRadius.circular(24),
-      ),
-      child: Text(
-        label,
-        style: TextStyle(
-          color: isSelected ? Colors.white : PrestigeColors.onSurfaceVariant,
-          fontWeight: FontWeight.w500,
-          fontSize: 14,
-        ),
-      ),
-    );
-  }
 
   Widget _buildRewardsGrid() {
     return FutureBuilder<List<Map<String, dynamic>>>(

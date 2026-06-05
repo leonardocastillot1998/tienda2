@@ -180,15 +180,7 @@ class _RewardDetailsPageState extends State<RewardDetailsPage> {
             fontSize: 18,
           ),
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.shopping_bag_outlined,
-              color: PrestigeColors.primaryContainer,
-            ),
-            onPressed: () {},
-          ),
-        ],
+
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),

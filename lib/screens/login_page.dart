@@ -36,9 +36,38 @@ class _LoginPageState extends State<LoginPage> {
     _checkSavedSession();
 
     try {
+      // Verificar si ya hay una sesión activa (por si el deep link ya fue procesado)
+      final existingSession = Supabase.instance.client.auth.currentSession;
+      if (existingSession != null) {
+        debugPrint('[GitHub Login] Sesión existente encontrada al iniciar');
+        WidgetsBinding.instance.addPostFrameCallback((_) async {
+          if (!mounted) return;
+          setState(() => _isLoading = true);
+          final result = await widget.authService.syncOAuthUser();
+          if (!mounted) return;
+          if (result.success && result.session != null) {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (_) => HomePage(
+                  username: result.session!.username,
+                  puntos: result.session!.points,
+                  authService: widget.authService,
+                ),
+              ),
+            );
+          } else {
+            setState(() {
+              _isLoading = false;
+              _error = result.error ?? 'Authentication failed';
+            });
+          }
+        });
+      }
+
       _authStateSubscription = Supabase.instance.client.auth.onAuthStateChange
           .listen((data) async {
             final event = data.event;
+            debugPrint('[GitHub Login] Auth event: $event');
             if (event == AuthChangeEvent.signedIn) {
               setState(() => _isLoading = true);
               final result = await widget.authService.syncOAuthUser();
@@ -63,7 +92,8 @@ class _LoginPageState extends State<LoginPage> {
               }
             }
           });
-    } catch (_) {
+    } catch (e) {
+      debugPrint('[GitHub Login] Error setting up auth listener: $e');
       _authStateSubscription = null;
     }
   }
