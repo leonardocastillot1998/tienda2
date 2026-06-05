@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../services/auth_service.dart';
@@ -24,69 +25,118 @@ class _LoginPageState extends State<LoginPage> {
 
   bool _isLoading = false;
   bool _obscurePassword = true;
+  bool _rememberMe = false;
   String? _error;
-  late final StreamSubscription<AuthState> _authStateSubscription;
+  StreamSubscription<AuthState>? _authStateSubscription;
 
   @override
   void initState() {
     super.initState();
+    _loadSavedCredentials();
     _checkSavedSession();
 
-    _authStateSubscription = Supabase.instance.client.auth.onAuthStateChange
-        .listen((data) async {
-          final event = data.event;
-          if (event == AuthChangeEvent.signedIn) {
-            setState(() => _isLoading = true);
-            final result = await widget.authService.syncOAuthUser();
+    try {
+      _authStateSubscription = Supabase.instance.client.auth.onAuthStateChange
+          .listen((data) async {
+            final event = data.event;
+            if (event == AuthChangeEvent.signedIn) {
+              setState(() => _isLoading = true);
+              final result = await widget.authService.syncOAuthUser();
 
-            if (!mounted) return;
+              if (!mounted) return;
 
-            if (result.success && result.session != null) {
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (_) => HomePage(
-                    username: result.session!.username,
-                    puntos: result.session!.points,
-                    authService: widget.authService,
+              if (result.success && result.session != null) {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (_) => HomePage(
+                      username: result.session!.username,
+                      puntos: result.session!.points,
+                      authService: widget.authService,
+                    ),
                   ),
-                ),
-              );
-            } else {
-              setState(() {
-                _isLoading = false;
-                _error = result.error ?? 'Authentication failed';
-              });
+                );
+              } else {
+                setState(() {
+                  _isLoading = false;
+                  _error = result.error ?? 'Authentication failed';
+                });
+              }
             }
-          }
-        });
+          });
+    } catch (_) {
+      _authStateSubscription = null;
+    }
   }
 
   @override
   void dispose() {
-    _authStateSubscription.cancel();
+    _authStateSubscription?.cancel();
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
 
-  Future<void> _checkSavedSession() async {
-    setState(() => _isLoading = true);
+  Future<void> _loadSavedCredentials() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final savedEmail = prefs.getString('saved_email');
+      final savedPassword = prefs.getString('saved_password');
+      final rememberMe = prefs.getBool('remember_me') ?? false;
 
-    final session = await widget.authService.checkSavedSession();
-    if (session != null && mounted) {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (_) => HomePage(
-            username: session.username,
-            puntos: session.points,
-            authService: widget.authService,
-          ),
-        ),
-      );
+      if (mounted) {
+        setState(() {
+          if (savedEmail != null) _emailController.text = savedEmail;
+          if (savedPassword != null) _passwordController.text = savedPassword;
+          _rememberMe = rememberMe;
+        });
+      }
+    } catch (e) {
+      print('Error loading saved credentials: $e');
     }
+  }
 
-    if (mounted) {
-      setState(() => _isLoading = false);
+  Future<void> _saveCredentials() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      if (_rememberMe) {
+        await prefs.setString('saved_email', _emailController.text.trim());
+        await prefs.setString('saved_password', _passwordController.text);
+        await prefs.setBool('remember_me', true);
+      } else {
+        await prefs.remove('saved_email');
+        await prefs.remove('saved_password');
+        await prefs.setBool('remember_me', false);
+      }
+    } catch (e) {
+      print('Error saving credentials: $e');
+    }
+  }
+
+  Future<void> _checkSavedSession() async {
+    try {
+      setState(() => _isLoading = true);
+
+      final session = await widget.authService.checkSavedSession();
+      if (session != null && mounted) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (_) => HomePage(
+              username: session.username,
+              puntos: session.points,
+              authService: widget.authService,
+            ),
+          ),
+        );
+        return;
+      }
+
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    } catch (_) {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
     }
   }
 
@@ -113,6 +163,7 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     if (result.success && result.session != null) {
+      await _saveCredentials();
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (_) => HomePage(
@@ -177,9 +228,15 @@ class _LoginPageState extends State<LoginPage> {
                                 passwordController: _passwordController,
                                 error: _error,
                                 obscurePassword: _obscurePassword,
+                                rememberMe: _rememberMe,
                                 onToggleObscure: () {
                                   setState(() {
                                     _obscurePassword = !_obscurePassword;
+                                  });
+                                },
+                                onRememberMeChanged: (value) {
+                                  setState(() {
+                                    _rememberMe = value ?? false;
                                   });
                                 },
                                 onSubmit: _login,
@@ -315,7 +372,9 @@ class _LoginForm extends StatelessWidget {
     required this.passwordController,
     required this.error,
     required this.obscurePassword,
+    required this.rememberMe,
     required this.onToggleObscure,
+    required this.onRememberMeChanged,
     required this.onSubmit,
     required this.onGoToRegister,
     required this.onGitHubLogin,
@@ -326,7 +385,9 @@ class _LoginForm extends StatelessWidget {
   final TextEditingController passwordController;
   final String? error;
   final bool obscurePassword;
+  final bool rememberMe;
   final VoidCallback onToggleObscure;
+  final ValueChanged<bool?> onRememberMeChanged;
   final VoidCallback onSubmit;
   final VoidCallback onGoToRegister;
   final VoidCallback onGitHubLogin;
@@ -402,6 +463,22 @@ class _LoginForm extends StatelessWidget {
               }
               return null;
             },
+          ),
+          const SizedBox(height: 24),
+          Row(
+            children: [
+              Checkbox(
+                value: rememberMe,
+                onChanged: onRememberMeChanged,
+                activeColor: PrestigeColors.primary,
+              ),
+              Text(
+                'Recuérdame',
+                style: textTheme.bodyMedium?.copyWith(
+                  color: PrestigeColors.onSurface,
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 36),
           _PressScaleButton(onPressed: onSubmit, child: const Text('Log In')),

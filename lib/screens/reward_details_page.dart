@@ -44,6 +44,19 @@ class _RewardDetailsPageState extends State<RewardDetailsPage> {
       final newPoints = _userPoints - cost;
       await AuthService().savePoints(username: _username, points: newPoints);
 
+      // Add entry to user's history
+      await AuthService().addHistoryEntry(
+        username: _username,
+        entry: {
+          'date': DateTime.now().toIso8601String(),
+          'title': widget.product['title'] ?? 'Unknown Product',
+          'description': widget.product['description'] ?? '',
+          'pointsSpent': '-${cost.toString()} pts',
+          'imageUrl': widget.product['image_url'] ?? '',
+          'status': 'Confirmed',
+        },
+      );
+
       setState(() {
         _userPoints = newPoints;
         _isLoading = false;
@@ -133,6 +146,8 @@ class _RewardDetailsPageState extends State<RewardDetailsPage> {
     final pointsCost = widget.product['points'] as int? ?? 0;
     final imageUrl = widget.product['image_url']?.toString() ?? '';
     final tag = widget.product['tag']?.toString();
+    final progressInfo =
+        AuthService.calculateRewardProgress(_userPoints, pointsCost);
     final description =
         widget.product['description']?.toString() ??
         'A masterpiece of precision engineering and timeless design. The Chronograph Prestige Edition blends classic aesthetics with modern horological advancements, ensuring unparalleled accuracy.';
@@ -320,6 +335,31 @@ class _RewardDetailsPageState extends State<RewardDetailsPage> {
                         ),
                       ),
                     ],
+                  ),
+                  const SizedBox(height: 16),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: LinearProgressIndicator(
+                      value: (progressInfo['progress'] as double? ?? 0) / 100,
+                      minHeight: 8,
+                      backgroundColor: PrestigeColors.surfaceContainerHigh,
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        (progressInfo['canRedeem'] as bool? ?? false)
+                            ? const Color(0xFF1A8A3D)
+                            : PrestigeColors.secondary,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    progressInfo['message']?.toString() ?? '',
+                    style: TextStyle(
+                      color: PrestigeColors.onSurfaceVariant,
+                      fontSize: 12,
+                      fontWeight: (progressInfo['canRedeem'] as bool? ?? false)
+                          ? FontWeight.bold
+                          : FontWeight.normal,
+                    ),
                   ),
                 ],
               ),

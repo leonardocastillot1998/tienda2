@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'dart:convert';
 
 const String kLoggedInKey = 'loggedIn';
 const String kUsernameKey = 'username';
@@ -21,7 +22,7 @@ class AuthResult {
 }
 
 class AuthService {
-  final _supabase = Supabase.instance.client;
+  SupabaseClient get _supabase => Supabase.instance.client;
 
   Future<void> signInWithGitHub() async {
     await _supabase.auth.signInWithOAuth(
@@ -222,6 +223,69 @@ class AuthService {
     }
   }
 
+  /// Adds a history entry for the given user into local shared preferences.
+  /// The entry is an arbitrary map that should contain at least a `date`,
+  /// `title` and `pointsSpent` fields to be displayed in the UI.
+  Future<void> addHistoryEntry({
+    required String username,
+    required Map<String, dynamic> entry,
+  }) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final key = 'history_\$username';
+      final raw = prefs.getString(key);
+      final List<dynamic> list = raw != null ? json.decode(raw) as List<dynamic> : [];
+      list.insert(0, entry);
+      await prefs.setString(key, json.encode(list));
+    } catch (e) {
+      debugPrint('Failed to add history entry: $e');
+    }
+  }
+
+  /// Returns the history list for the given user from shared preferences.
+  Future<List<Map<String, dynamic>>> getHistory(String username) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final raw = prefs.getString('history_\$username');
+      if (raw == null || raw.isEmpty) return [];
+      final data = json.decode(raw) as List<dynamic>;
+      return data.map((e) => Map<String, dynamic>.from(e as Map)).toList();
+    } catch (e) {
+      debugPrint('Failed to read history: $e');
+      return [];
+    }
+  }
+
+  /// Adds a custom product to local storage for the given user.
+  Future<void> addCustomProduct({
+    required String username,
+    required Map<String, dynamic> product,
+  }) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final key = 'custom_products_\$username';
+      final raw = prefs.getString(key);
+      final List<dynamic> list = raw != null ? json.decode(raw) as List<dynamic> : [];
+      list.insert(0, product);
+      await prefs.setString(key, json.encode(list));
+    } catch (e) {
+      debugPrint('Failed to add custom product: $e');
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getCustomProducts(String username) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final raw = prefs.getString('custom_products_\$username');
+      if (raw == null || raw.isEmpty) return [];
+      final data = json.decode(raw) as List<dynamic>;
+      return data.map((e) => Map<String, dynamic>.from(e as Map)).toList();
+    } catch (e) {
+      debugPrint('Failed to read custom products: $e');
+      return [];
+    }
+  }
+
   Future<String?> updateUserProfile({
     required String username,
     String? nombreCompleto,
@@ -259,6 +323,93 @@ class AuthService {
       // Ignore in production UI, but keep the actual error visible in debug logs.
       debugPrint('Failed to update profile: $e');
       return e.toString();
+    }
+  }
+
+  /// Calculates the closest reward and progress towards it
+  /// Returns a map with rewardInfo and progress percentage
+  static Map<String, dynamic>? calculateClosestRewardProgress(
+    int currentPoints,
+    List<Map<String, dynamic>> products,
+  ) {
+    if (products.isEmpty) return null;
+
+    int pointsFor(Map<String, dynamic> product) {
+      final value = product['points'];
+      if (value is int) return value;
+      if (value is num) return value.toInt();
+      return int.tryParse(value?.toString() ?? '') ?? 0;
+    }
+
+    final sortedProducts = List<Map<String, dynamic>>.from(products)
+      ..sort((a, b) => pointsFor(a).compareTo(pointsFor(b)));
+
+    final redeemableRewards = sortedProducts
+        .where((product) => pointsFor(product) <= currentPoints)
+        .toList();
+
+    final hasRedeemableReward = redeemableRewards.isNotEmpty;
+    final closestReward = hasRedeemableReward
+        ? redeemableRewards.last
+        : sortedProducts.firstWhere(
+            (product) => pointsFor(product) > currentPoints,
+            orElse: () => sortedProducts.last,
+          );
+    final pointsRequired = pointsFor(closestReward);
+    final canRedeem = currentPoints >= pointsRequired;
+    final progressPercentage = canRedeem
+        ? 100.0
+        : (pointsRequired <= 0
+              ? 0.0
+              : (currentPoints / pointsRequired * 100).clamp(0, 100).toDouble());
+
+    return {
+      'rewardTitle': closestReward['title'] ?? 'Unknown Reward',
+      'pointsRequired': pointsRequired,
+      'currentPoints': currentPoints,
+      'pointsNeeded': canRedeem ? 0 : (pointsRequired - currentPoints),
+      'progress': progressPercentage,
+      'canRedeem': canRedeem,
+      'hasRedeemableReward': hasRedeemableReward,
+      'statusLabel': hasRedeemableReward ? 'Listo para canjear!' : 'Progreso hacia recompensa',
+      'message': hasRedeemableReward
+          ? 'Puedes canjear esta recompensa ahora'
+          : 'Te faltan ${(pointsRequired - currentPoints).clamp(0, pointsRequired)} puntos',
+    };
+  }
+
+  static Map<String, dynamic> calculateRewardProgress(
+    int currentPoints,
+    int rewardPoints,
+  ) {
+    final canRedeem = currentPoints >= rewardPoints;
+    final pointsNeeded = canRedeem ? 0 : (rewardPoints - currentPoints);
+    final progressPercentage = rewardPoints <= 0
+        ? 0.0
+        : (currentPoints / rewardPoints * 100).clamp(0, 100).toDouble();
+
+    return {
+      'progress': canRedeem ? 100.0 : progressPercentage,
+      'canRedeem': canRedeem,
+      'pointsNeeded': pointsNeeded,
+      'statusLabel': canRedeem ? 'Listo para canjear!' : 'Progreso hacia este premio',
+      'message': canRedeem
+          ? 'Puedes canjear este producto ahora'
+          : 'Te faltan $pointsNeeded puntos',
+    };
+  }
+
+  Future<Map<String, dynamic>?> getClosestRewardProgress(int currentPoints) async {
+    try {
+      final products = await _supabase.from('productos').select();
+      final typedProducts = products
+          .whereType<Map<String, dynamic>>()
+          .toList();
+
+      return calculateClosestRewardProgress(currentPoints, typedProducts);
+    } catch (e) {
+      debugPrint('Error calculating closest reward: $e');
+      return null;
     }
   }
 }

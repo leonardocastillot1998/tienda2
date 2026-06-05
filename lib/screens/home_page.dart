@@ -7,6 +7,8 @@ import 'login_page.dart';
 import 'profile_page.dart';
 import 'history_page.dart';
 import 'reward_details_page.dart';
+import 'add_product_page.dart';
+import 'purchases_page.dart';
 import '../theme/prestige_theme.dart';
 
 class HomePage extends StatefulWidget {
@@ -33,6 +35,16 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _puntos = widget.puntos;
+    _refreshPoints();
+  }
+
+  Future<void> _refreshPoints() async {
+    final profile = await widget.authService.getUserProfile(widget.username);
+    if (!mounted || profile == null) return;
+
+    setState(() {
+      _puntos = profile['points'] ?? _puntos;
+    });
   }
 
   Future<void> _logout() async {
@@ -59,6 +71,18 @@ class _HomePageState extends State<HomePage> {
     );
 
     if (valor < 0 && mounted) {
+      // Register a quick redeem entry in history
+      await widget.authService.addHistoryEntry(
+        username: widget.username,
+        entry: {
+          'date': DateTime.now().toIso8601String(),
+          'title': 'Canje rápido',
+          'description': 'Canje realizado desde el panel principal',
+          'pointsSpent': '-${valor.abs().toString()} pts',
+          'imageUrl': '',
+          'status': 'Confirmed',
+        },
+      );
       showDialog<void>(
         context: context,
         builder: (context) => AlertDialog(
@@ -87,6 +111,8 @@ class _HomePageState extends State<HomePage> {
           ),
           children: [
             _buildWelcomeAndHero(),
+            const SizedBox(height: 32),
+            _buildDashboardRewardBoard(),
             const SizedBox(height: 32),
             _buildQuickActionsGrid(),
             const SizedBox(height: 32),
@@ -167,40 +193,6 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
               const SizedBox(height: 24),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Next Tier: Platinum',
-                    style: TextStyle(
-                      color: Colors.white.withOpacity(0.8),
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  Text(
-                    '500 pts to go',
-                    style: TextStyle(
-                      color: PrestigeColors.secondaryContainer.withOpacity(0.8),
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: LinearProgressIndicator(
-                  value: 0.8,
-                  minHeight: 6,
-                  backgroundColor: Colors.white.withOpacity(0.1),
-                  valueColor: const AlwaysStoppedAnimation<Color>(
-                    PrestigeColors.secondaryContainer,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 32),
               ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: PrestigeColors.secondaryContainer,
@@ -294,6 +286,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
+              const SizedBox(height: 24),
             ],
           ),
         ),
@@ -363,6 +356,104 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildRewardProgress() {
+    return FutureBuilder<Map<String, dynamic>?>(
+      future: widget.authService.getClosestRewardProgress(_puntos),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const SizedBox.shrink();
+        }
+
+        if (snapshot.hasError || snapshot.data == null) {
+          return const SizedBox.shrink();
+        }
+
+        final data = snapshot.data!;
+        final rewardTitle = data['rewardTitle'] as String? ?? 'Unknown';
+        final progress = data['progress'] as double? ?? 0;
+        final pointsNeeded = data['pointsNeeded'] as int? ?? 0;
+        final canRedeem = data['canRedeem'] as bool? ?? false;
+        final hasRedeemableReward = data['hasRedeemableReward'] as bool? ?? false;
+        final statusLabel = data['statusLabel'] as String? ??
+            (hasRedeemableReward ? 'Listo para canjear!' : 'Progreso hacia recompensa');
+        final message = data['message'] as String? ??
+            (hasRedeemableReward
+                ? 'Puedes canjear esta recompensa ahora'
+                : '${progress.toStringAsFixed(0)}% completado');
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        statusLabel,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          color: PrestigeColors.onSurfaceVariant,
+                          letterSpacing: 0.5,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        rewardTitle,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: PrestigeColors.primary,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
+                if (!hasRedeemableReward)
+                  Text(
+                    '$pointsNeeded pts',
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: PrestigeColors.secondary,
+                    ),
+                  ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: LinearProgressIndicator(
+                value: (progress / 100).clamp(0, 1),
+                minHeight: 8,
+                backgroundColor: PrestigeColors.surfaceContainerHigh,
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  hasRedeemableReward || canRedeem
+                      ? const Color(0xFF1A8A3D)
+                      : PrestigeColors.secondary,
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              message,
+              style: TextStyle(
+                fontSize: 12,
+                color: PrestigeColors.onSurfaceVariant,
+                fontWeight: hasRedeemableReward ? FontWeight.bold : FontWeight.normal,
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -675,6 +766,8 @@ class _HomePageState extends State<HomePage> {
           children: [
             _buildHeroSection(),
             const SizedBox(height: 48),
+            _buildRewardProgress(),
+            const SizedBox(height: 48),
             _buildSearchAndFilters(),
             const SizedBox(height: 48),
             _buildRewardsGrid(),
@@ -719,9 +812,25 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
               ),
-              IconButton(
-                onPressed: _logout,
-                icon: const Icon(Icons.logout, color: Colors.grey),
+              Row(
+                children: [
+                  IconButton(
+                    onPressed: () async {
+                      final added = await Navigator.of(context).push<bool>(
+                        MaterialPageRoute(builder: (_) => const AddProductPage()),
+                      );
+                      if (added == true) {
+                        setState(() {});
+                      }
+                    },
+                    icon: const Icon(Icons.add_box_outlined, color: Colors.grey),
+                    tooltip: 'Agregar producto',
+                  ),
+                  IconButton(
+                    onPressed: _logout,
+                    icon: const Icon(Icons.logout, color: Colors.grey),
+                  ),
+                ],
               ),
             ],
           ),
@@ -968,14 +1077,18 @@ class _HomePageState extends State<HomePage> {
           childAspectRatio: 0.65,
           children: records.map((product) {
             final title = product['title']?.toString() ?? 'Producto sin título';
-            final points = '${product['points']?.toString() ?? '0'} pts';
+            final rewardPoints = int.tryParse(product['points']?.toString() ?? '0') ?? 0;
+            final points = '$rewardPoints pts';
             final imageUrl = product['image_url']?.toString() ?? '';
             final tag = product['tag']?.toString();
+            final progressInfo =
+                AuthService.calculateRewardProgress(_puntos, rewardPoints);
 
             return _buildRewardCard(
               title,
               points,
               imageUrl,
+              progressInfo: progressInfo,
               tag: tag,
               tagColor: tag != null
                   ? PrestigeColors.primaryContainer.withOpacity(0.2)
@@ -1010,6 +1123,7 @@ class _HomePageState extends State<HomePage> {
     String title,
     String points,
     String imageUrl, {
+    required Map<String, dynamic> progressInfo,
     String? tag,
     Color? tagColor,
     Color? tagTextColor,
@@ -1089,9 +1203,11 @@ class _HomePageState extends State<HomePage> {
                     fontSize: 12,
                   ),
                 ),
-                const Text(
-                  'VIEW DETAILS',
-                  style: TextStyle(
+                Text(
+                  (progressInfo['canRedeem'] as bool? ?? false)
+                      ? 'CANJEAR'
+                      : 'VIEW DETAILS',
+                  style: const TextStyle(
                     fontSize: 10,
                     fontWeight: FontWeight.bold,
                     decoration: TextDecoration.underline,
@@ -1099,9 +1215,129 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
+            const SizedBox(height: 8),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: LinearProgressIndicator(
+                value: (progressInfo['progress'] as double? ?? 0) / 100,
+                minHeight: 6,
+                backgroundColor: PrestigeColors.surfaceContainerHigh,
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  (progressInfo['canRedeem'] as bool? ?? false)
+                      ? const Color(0xFF1A8A3D)
+                      : PrestigeColors.secondary,
+                ),
+              ),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              progressInfo['message']?.toString() ?? '',
+              style: TextStyle(
+                fontSize: 11,
+                fontWeight:
+                    (progressInfo['canRedeem'] as bool? ?? false)
+                        ? FontWeight.bold
+                        : FontWeight.normal,
+                color: PrestigeColors.onSurfaceVariant,
+              ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildDashboardRewardBoard() {
+    return FutureBuilder<Map<String, dynamic>?>(
+      future: widget.authService.getClosestRewardProgress(_puntos),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const SizedBox.shrink();
+        }
+
+        final data = snapshot.data;
+        if (data == null) {
+          return const SizedBox.shrink();
+        }
+
+        final rewardTitle = data['rewardTitle']?.toString() ?? 'Unknown reward';
+        final progress = data['progress'] as double? ?? 0;
+        final pointsNeeded = data['pointsNeeded'] as int? ?? 0;
+        final hasRedeemableReward = data['hasRedeemableReward'] as bool? ?? false;
+        final statusLabel = data['statusLabel']?.toString() ??
+            (hasRedeemableReward ? 'Listo para canjear!' : 'Progreso hacia recompensa');
+        final message = data['message']?.toString() ??
+            (hasRedeemableReward
+                ? 'Puedes canjear esta recompensa ahora'
+                : 'Te faltan $pointsNeeded puntos');
+
+        return Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            color: PrestigeColors.surfaceContainerLow,
+            borderRadius: BorderRadius.circular(24),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'REWARD DASHBOARD',
+                style: TextStyle(
+                  color: PrestigeColors.onSurfaceVariant,
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 2,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                rewardTitle,
+                style: const TextStyle(
+                  color: PrestigeColors.primaryContainer,
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                statusLabel,
+                style: TextStyle(
+                  color: hasRedeemableReward
+                      ? const Color(0xFF1A8A3D)
+                      : PrestigeColors.onSurfaceVariant,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              const SizedBox(height: 12),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: LinearProgressIndicator(
+                  value: (progress / 100).clamp(0, 1),
+                  minHeight: 8,
+                  backgroundColor: PrestigeColors.surfaceContainerHigh,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    hasRedeemableReward
+                        ? const Color(0xFF1A8A3D)
+                        : PrestigeColors.secondary,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                message,
+                style: const TextStyle(
+                  color: PrestigeColors.onSurfaceVariant,
+                  fontSize: 12,
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 
@@ -1161,10 +1397,13 @@ class _HomePageState extends State<HomePage> {
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
+        setState(() {
+          _currentIndex = index;
+        });
+        if (index == 0) {
+          _refreshPoints();
+        }
+      },
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
           margin: const EdgeInsets.symmetric(horizontal: 4),
@@ -1218,6 +1457,17 @@ class _HomePageState extends State<HomePage> {
       extendBody: true,
       body: buildBody(),
       bottomNavigationBar: _buildBottomNavBar(),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () async {
+          await Navigator.of(context).push(
+            MaterialPageRoute(builder: (_) => const PurchasesPage()),
+          );
+          await _refreshPoints();
+        },
+        label: const Text('Compras'),
+        icon: const Icon(Icons.shopping_cart),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }

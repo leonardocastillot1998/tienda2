@@ -1,10 +1,41 @@
 import 'dart:ui';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../theme/prestige_theme.dart';
+import '../services/auth_service.dart';
 
-class HistoryPage extends StatelessWidget {
+// Loads history entries saved locally per user and displays them.
+
+class HistoryPage extends StatefulWidget {
   const HistoryPage({super.key});
+
+  @override
+  State<HistoryPage> createState() => _HistoryPageState();
+}
+
+class _HistoryPageState extends State<HistoryPage> {
+  List<Map<String, dynamic>> _entries = [];
+  String _username = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadHistory();
+  }
+
+  Future<void> _loadHistory() async {
+    final session = await AuthService().checkSavedSession();
+    if (session == null) return;
+
+    _username = session.username;
+    final entries = await AuthService().getHistory(_username);
+    if (mounted) {
+      setState(() {
+        _entries = entries;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,47 +125,38 @@ class HistoryPage extends StatelessWidget {
             ),
             const SizedBox(height: 32),
 
-            // History List
-            _buildHistoryItem(
-              status: 'Delivered',
-              date: 'Oct 12, 2023',
-              title: 'Chronograph Prestige Edition',
-              description:
-                  'Exclusive Swiss-made timepiece from the Artisan Collection.',
-              pointsSpent: '-125,000 pts',
-              imageUrl:
-                  'https://lh3.googleusercontent.com/aida-public/AB6AXuDWqrL3VREt_PSwGLEmawYzY-1mAeFQUWGWxXpklJMqBC9wOsWNYg802M6WGjojdbj8EG4_D5_SFUOKMidUs7ee0m20HnKmMZefgoeW3mS0_yH8E8cJJnN3YOOJqAvTAP-ULqLpX_nx9q9DSGZctdyQ_90UtYJN1xiH-guTl1GVNzZy96WgHNI-I6yrIv_jH1wCr41EuVvY29I_iz1PwVbWfB77p9nZJgjzDn5IAywsTQLdMFNSNSzUlXRGtDpfVFQC1O_hGa-QpA',
-            ),
-            const SizedBox(height: 24),
+            // History List (dynamic)
+            if (_entries.isEmpty)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 24.0),
+                child: Text(
+                  'No hay entradas en el historial aún.',
+                  style: GoogleFonts.manrope(
+                    color: PrestigeColors.onSurfaceVariant,
+                  ),
+                ),
+              )
+            else
+              ..._entries.map((e) {
+                final date = e['date']?.toString() ?? '';
+                final dateStr = date.isNotEmpty
+                    ? DateTime.tryParse(date)?.toLocal().toString().split(' ').first
+                    : '';
 
-            _buildHistoryItem(
-              status: 'Processing',
-              date: 'Nov 04, 2023',
-              title: 'Weekend Retreat for Two',
-              description:
-                  'A curated 2-night stay at the Azure Coastal Resort including spa access.',
-              pointsSpent: '-45,000 pts',
-              imageUrl:
-                  'https://lh3.googleusercontent.com/aida-public/AB6AXuDPSuKTH_EDoqez-1rmTRkuuPxVSSmYYPllI4c2en3ILnJULx--8giSaZMn-m4j0lmbagSAlIumq6wh4kZIAkvy3Hwvub-CmKUtJwbFr0fQUO4qsgJDHivuX1DRjUvK37a0-q-PkwuD_97AIsXSfYtO6m0hiFMuST0Qk22vu1yL3S7XBPySbRZBNCcMIk7cYBHFYJUtraclfGAPl4Fb46P3dtI1RG8trU_kskq8rwRSS7PvkMP9_UNxG4VSD0eHM5uBqk5toSvZGQ',
-              statusColor: PrestigeColors.secondaryContainer,
-              statusBgColor: const Color(
-                0xFFFFDEA8,
-              ).withOpacity(0.2), // secondary-fixed/20
-              statusBorderColor: const Color(0xFFFFDEA8), // secondary-fixed
-              statusIcon: Icons.sync,
-            ),
-            const SizedBox(height: 24),
-
-            _buildHistoryItem(
-              status: 'Confirmed',
-              date: 'Nov 15, 2023',
-              title: 'Chef\'s Tasting Menu',
-              description:
-                  'Exclusive dining experience at L\'Orangerie featuring a 7-course seasonal menu.',
-              pointsSpent: '-15,000 pts',
-              isIconFallback: true,
-              fallbackIcon: Icons.restaurant,
-            ),
+                return Column(
+                  children: [
+                    _buildHistoryItem(
+                      status: e['status']?.toString() ?? 'Confirmed',
+                      date: dateStr ?? '',
+                      title: e['title']?.toString() ?? '',
+                      description: e['description']?.toString() ?? '',
+                      pointsSpent: e['pointsSpent']?.toString() ?? '',
+                      imageUrl: e['imageUrl']?.toString(),
+                    ),
+                    const SizedBox(height: 24),
+                  ],
+                );
+              }).toList(),
 
             const SizedBox(height: 32),
 
@@ -243,28 +265,7 @@ class HistoryPage extends StatelessWidget {
                               ),
                             ),
                           )
-                        : Image.network(
-                            imageUrl ?? '',
-                            fit: BoxFit.cover,
-                            loadingBuilder: (context, child, loadingProgress) {
-                              if (loadingProgress == null) return child;
-                              return Center(
-                                child: CircularProgressIndicator(
-                                  value:
-                                      loadingProgress.expectedTotalBytes != null
-                                      ? loadingProgress.cumulativeBytesLoaded /
-                                            (loadingProgress
-                                                    .expectedTotalBytes ??
-                                                1)
-                                      : null,
-                                  color: PrestigeColors.primaryContainer,
-                                ),
-                              );
-                            },
-                            errorBuilder: (context, error, stackTrace) {
-                              return const Center(child: Icon(Icons.error));
-                            },
-                          ),
+                        : _buildImageWidget(imageUrl),
                   ),
 
                   SizedBox(width: isMobile ? 0 : 24, height: isMobile ? 16 : 0),
@@ -401,5 +402,113 @@ class HistoryPage extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  Widget _buildImageWidget(String? imageUrl) {
+    if (imageUrl == null || imageUrl.isEmpty) {
+      return Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              PrestigeColors.primary,
+              PrestigeColors.primaryContainer,
+            ],
+          ),
+        ),
+        child: const Center(
+          child: Icon(
+            Icons.image,
+            color: PrestigeColors.surface,
+            size: 48,
+          ),
+        ),
+      );
+    }
+
+    try {
+      final normalized = imageUrl.trim();
+
+      if (normalized.startsWith('http://') ||
+          normalized.startsWith('https://')) {
+        return Image.network(
+          normalized,
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) {
+            return Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    PrestigeColors.primary,
+                    PrestigeColors.primaryContainer,
+                  ],
+                ),
+              ),
+              child: const Center(
+                child: Icon(
+                  Icons.broken_image,
+                  color: PrestigeColors.surface,
+                  size: 48,
+                ),
+              ),
+            );
+          },
+        );
+      }
+
+      final base64Data = normalized.startsWith('data:image')
+          ? normalized.split(',').last
+          : normalized;
+
+      // Soporta base64 puro o data URLs guardadas en historial.
+      return Image.memory(
+        base64Decode(base64Data),
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) {
+          return Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  PrestigeColors.primary,
+                  PrestigeColors.primaryContainer,
+                ],
+              ),
+            ),
+            child: const Center(
+              child: Icon(
+                Icons.broken_image,
+                color: PrestigeColors.surface,
+                size: 48,
+              ),
+            ),
+          );
+        },
+      );
+    } catch (e) {
+      return Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              PrestigeColors.primary,
+              PrestigeColors.primaryContainer,
+            ],
+          ),
+        ),
+        child: const Center(
+          child: Icon(
+            Icons.error,
+            color: PrestigeColors.surface,
+            size: 48,
+          ),
+        ),
+      );
+    }
   }
 }
